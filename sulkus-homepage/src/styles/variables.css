@@ -1,0 +1,11 @@
+:root {
+  --color-bg: #5a727327;
+  --color-card: #FFF7E1;
+  --color-primary: #FFD54F;
+  --color-accent: #FFB366;
+  --color-text: #313617;
+
+  --font-main: "Cafe24PROSlimAir", "Cafe24PROSlimFit", -apple-system,
+    BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
+  --font-eng: "AmaticSC-Bold", sans-serif;
+}
