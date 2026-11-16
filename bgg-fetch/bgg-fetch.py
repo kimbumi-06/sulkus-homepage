@@ -79,8 +79,8 @@ def parse_item(it, ko_map):
     desc = re.sub(r"<[^>]+>", "", desc).strip()
 
     thumb = it.findtext("thumbnail") or ""
-    image = re.sub(r"/fit-in/\d+x\d+/", "/", thumb) or (it.findtext("image") or "")
-
+    image = it.findtext("image") or it.findtext("thumbnail") or ""
+    
     return {
         "name_ko": name_ko,
         "id": gid,

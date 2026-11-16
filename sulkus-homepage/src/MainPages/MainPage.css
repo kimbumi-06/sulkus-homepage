@@ -23,7 +23,7 @@
 .mainpage__list {
   display: grid;
   grid-template-columns: repeat(auto-fill, 240px);
-  gap: 24px;
+  gap: 20px;
   justify-content: center;
   padding: 0 24px 40px;
 }

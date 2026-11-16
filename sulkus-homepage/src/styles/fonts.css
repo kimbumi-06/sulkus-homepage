@@ -1,11 +1,11 @@
 @font-face {
   font-family: "Cafe24PROSlimAir";
-  src: url("../assets/fonts/Cafe24PROSlimAir.ttf") format("truetype");
+  src: url("../assets/fonts/Cafe24PROSlimAir.ttf") format("woff2");
   font-display: swap;
 }
 @font-face {
   font-family: "Cafe24PROSlimFit";
-  src: url("../assets/fonts/Cafe24PROSlimFit.ttf") format("truetype");
+  src: url("../assets/fonts/Cafe24PROSlimFit.ttf") format("woff2");
   font-display: swap;
 }
 @font-face {
