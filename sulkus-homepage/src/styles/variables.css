@@ -1,5 +1,11 @@
 :root {
-  --color-bg:  #ffd147a2;
+  //--color-bg:  #004620d9;
+  //--color-bg:  #462100d9;
+  //--color-bg:  #ffd64f88;
+  //--color-bg:  #ffb264;
+  --color-bg:  #820200;
+  
+  --color-bg-header:  #ffffffd9;
   --color-card: #FFF7E1;
   --color-primary: #FFD54F;
   --color-accent: #FFB366;
