@@ -185,9 +185,10 @@
 
   scrollbar-width: none;
 
-  //-webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
-  //mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
-
+  /*
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
+  */
 }
 
 .description-text {

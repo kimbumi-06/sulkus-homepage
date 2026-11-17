@@ -1,0 +1,11 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "sulkus-homepage",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "sulkus-homepage", "run", "dev", "--", "--port", "5173", "--strictPort"],
+      "port": 5173
+    }
+  ]
+}

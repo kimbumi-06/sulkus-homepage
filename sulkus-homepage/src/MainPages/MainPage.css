@@ -29,3 +29,23 @@
   justify-content: center;
   padding: 40px 24px 40px;
 }
+
+.mainpage__pagination {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 6px;
+  padding: 0 12px 40px;
+  color: var(--color-card);
+}
+.mainpage__pagination a {
+  padding: 6px 12px;
+  border-radius: 8px;
+  color: var(--color-card);
+  text-decoration: none;
+}
+.mainpage__pagination a.active {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  font-weight: bold;
+}

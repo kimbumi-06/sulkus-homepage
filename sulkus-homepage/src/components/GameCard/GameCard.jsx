@@ -48,13 +48,9 @@ function GameCard({ game }) {
 
         <img
           className="card__image"
-          src={image || images.placeholder}
+          src={image}
           alt={name_en}
           loading="lazy"
-          onError={(e) => {
-            e.currentTarget.onerror = null;
-            e.currentTarget.src = images.placeholder;
-          }}
         />
       </div>
 
