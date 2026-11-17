@@ -37,7 +37,6 @@ function SearchBar({ value, onChange, delay = 250 }) {
       <input
         type="search"
         className="searchbar__input"
-        placeholder="게임 제목 검색 (한글/영문)"
         value={text}
         onChange={handleChange}
         aria-label="게임 제목 검색"

@@ -32,12 +32,13 @@ function MainPage() {
 
   return (
     <div className="mainpage">
-      <Link className="mainpage__brand" to="/?page=1">
-        <img className="mainpage__logo" src={images.logo} alt="" />
-        <span className="mainpage__brand-name">Sulkus</span>
-      </Link>
-
       <Toolbar
+        brand={
+          <Link className="mainpage__brand" to="/?page=1">
+            <img className="mainpage__logo" src={images.logo} alt="" />
+            <span className="mainpage__brand-name">Sulkus</span>
+          </Link>
+        }
         params={params}
         setParams={setParams}
         mechanics={mechanics}
