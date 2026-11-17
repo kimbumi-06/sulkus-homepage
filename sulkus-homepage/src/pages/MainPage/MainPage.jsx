@@ -1,6 +1,6 @@
 import './MainPage.css';
 import { useCallback, useEffect, useState } from 'react';
-import { Navigate } from 'react-router-dom';
+import { Link, Navigate } from 'react-router-dom';
 import GameCard from '../../components/GameCard/GameCard';
 import Pagination from '../../components/Pagination/Pagination';
 import GameModal from '../../components/GameModal/GameModal';
@@ -32,15 +32,14 @@ function MainPage() {
 
   return (
     <div className="mainpage">
-      <header className="mainpage__header">
-        <img className="mainpage__logo" src={images.logo} alt="Sulkus" />
-        <h1 className="mainpage__title">보드게임 리스트</h1>
-      </header>
+      <Link className="mainpage__brand" to="/?page=1">
+        <img className="mainpage__logo" src={images.logo} alt="" />
+        <span className="mainpage__brand-name">Sulkus</span>
+      </Link>
 
       <Toolbar
         params={params}
         setParams={setParams}
-        totalCount={totalCount}
         mechanics={mechanics}
       />
 

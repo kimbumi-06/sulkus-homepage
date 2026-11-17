@@ -5,7 +5,7 @@ import SortSelect from './SortSelect';
 import FilterPanel from './FilterPanel';
 import { DEFAULT_SORT, countActiveFilters } from '../../utils/gameQuery';
 
-function Toolbar({ params, setParams, totalCount, mechanics }) {
+function Toolbar({ params, setParams, mechanics }) {
   const sort = params.get('sort') || DEFAULT_SORT;
   const activeCount = countActiveFilters(params);
   // 주소에 필터가 들어 있는 채로 들어오면 패널을 펼친 상태로 시작
@@ -41,14 +41,13 @@ function Toolbar({ params, setParams, totalCount, mechanics }) {
         <FilterPanel params={params} setParams={setParams} mechanics={mechanics} />
       )}
 
-      <div className="toolbar__status">
-        <span>{totalCount}개 게임</span>
-        {activeCount > 0 && (
+      {activeCount > 0 && (
+        <div className="toolbar__status">
           <button type="button" className="toolbar__reset" onClick={resetFilters}>
             필터 초기화
           </button>
-        )}
-      </div>
+        </div>
+      )}
     </section>
   );
 }

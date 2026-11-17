@@ -1,20 +1,11 @@
+/* 한글: Cafe24 PRO Slim (src/assets/fonts) / 영문 제목: Amatic SC (index.html에서 Google Fonts로 로드) */
 @font-face {
   font-family: "Cafe24PROSlimAir";
-  src: url("../assets/fonts/Cafe24PROSlimAir.ttf") format("woff2");
+  src: url("../assets/fonts/Cafe24PROSlimAir.woff2") format("woff2");
   font-display: swap;
 }
 @font-face {
   font-family: "Cafe24PROSlimFit";
-  src: url("../assets/fonts/Cafe24PROSlimFit.ttf") format("woff2");
-  font-display: swap;
-}
-@font-face {
-  font-family: "AmaticSC-Regular";
-  src: url("../assets/fonts/AmaticSC-Regular.ttf") format("truetype");
-  font-display: swap;
-}
-@font-face {
-  font-family: "AmaticSC-Bold";
-  src: url("../assets/fonts/AmaticSC-Bold.ttf") format("truetype");
+  src: url("../assets/fonts/Cafe24PROSlimFit.woff2") format("woff2");
   font-display: swap;
 }
