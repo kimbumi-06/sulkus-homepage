@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { ChevronDown, SlidersHorizontal } from 'lucide-react';
 import './Toolbar.css';
 import SearchBar from './SearchBar';
 import SortSelect from './SortSelect';
@@ -31,9 +32,10 @@ function Toolbar({ params, setParams, mechanics }) {
           aria-expanded={open}
           onClick={() => setOpen((v) => !v)}
         >
+          <SlidersHorizontal size={16} strokeWidth={1.75} aria-hidden="true" />
           필터
           {activeCount > 0 && <span className="toolbar__badge">{activeCount}</span>}
-          <span className="toolbar__caret" aria-hidden="true">▾</span>
+          <ChevronDown className="toolbar__caret" size={16} strokeWidth={1.75} aria-hidden="true" />
         </button>
       </div>
 

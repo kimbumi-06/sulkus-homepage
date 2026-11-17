@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import './GameModal.css';
 import * as images from '../../assets/images';
 import { formatRange } from '../../utils/format';
+import { X, ExternalLink } from 'lucide-react';
 import mechanicInfo from '../../data/mechanicInfo';
 
 function GameModal({ game, onClose }) {
@@ -41,7 +42,9 @@ function GameModal({ game, onClose }) {
         aria-label={name_ko || name_en}
         onClick={(e) => e.stopPropagation()}
       >
-        <button className="modal__close" onClick={onClose} aria-label="닫기">×</button>
+        <button className="modal__close" onClick={onClose} aria-label="닫기">
+          <X size={20} strokeWidth={1.75} />
+        </button>
 
         <header className="modal__header">
           <div className="modal__rating">
@@ -92,17 +95,18 @@ function GameModal({ game, onClose }) {
               <section>
                 <h3>메커니즘</h3>
                 <div className="modal__chips modal__chips--mechanic">
-                  {mechanics_ko.map((m) => (
+                  {mechanics_ko.map((m) => {
+                    const Icon = mechanicInfo[m]?.icon;
+                    return (
                     <span key={m} className="modal__mech">
-                      {mechanicInfo[m]?.icon && (
-                        <span className="modal__mech-icon">{mechanicInfo[m].icon}</span>
-                      )}
+                      {Icon && <Icon className="modal__mech-icon" size={14} strokeWidth={1.75} />}
                       {m}
                       {mechanicInfo[m]?.desc && (
                         <span className="modal__mech-desc">{mechanicInfo[m].desc}</span>
                       )}
                     </span>
-                  ))}
+                    );
+                  })}
                 </div>
               </section>
             )}
@@ -113,7 +117,7 @@ function GameModal({ game, onClose }) {
               target="_blank"
               rel="noreferrer"
             >
-              BGG에서 보기 ↗
+              BGG에서 보기 <ExternalLink size={13} strokeWidth={1.75} />
             </a>
           </div>
         </div>

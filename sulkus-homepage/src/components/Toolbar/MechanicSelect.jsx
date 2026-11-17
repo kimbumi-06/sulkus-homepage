@@ -1,4 +1,5 @@
 import { useId, useMemo, useRef, useState } from 'react';
+import { X } from 'lucide-react';
 
 const normalize = (s) => (s || '').toLowerCase().replace(/\s+/g, '');
 
@@ -63,7 +64,7 @@ function MechanicSelect({ options, selected, onChange }) {
                 remove(name);
               }}
             >
-              ×
+              <X size={12} strokeWidth={2} />
             </button>
           </span>
         ))}
