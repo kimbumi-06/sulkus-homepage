@@ -33,8 +33,9 @@
   border-radius: 50%;
   background-color: var(--color-primary);
   color: var(--color-text);
-  font-size: 1.5rem;
-  line-height: 1;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   cursor: pointer;
 }
 .modal__close:hover {
@@ -159,9 +160,8 @@
   background-color: var(--color-accent);
   cursor: default;
 }
-.modal__chips .modal__mech-icon {
-  padding: 0;
-  background: none;
+.modal__mech-icon {
+  flex-shrink: 0;
 }
 /* 메커니즘 칩에 마우스를 올리면 설명 표시 */
 .modal__chips .modal__mech-desc {
@@ -185,6 +185,9 @@
 }
 
 .modal__bgg {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
   align-self: flex-start;
   margin-top: auto;
   color: var(--color-text);
