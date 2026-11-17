@@ -42,7 +42,7 @@ function GameCard({ game }) {
           </div>
           <div className="card__stat">
             <img src={images.ranking} alt="BGG 랭킹" />
-            <span>{rank}위</span>
+            {rank === 'N/A' ? <span>랭킹 외</span> : <span>{rank}위</span>}
           </div>
         </aside>
 
