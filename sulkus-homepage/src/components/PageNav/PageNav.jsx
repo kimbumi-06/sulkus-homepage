@@ -1,5 +1,5 @@
 import { Link } from 'react-router-dom';
-import './Pagination.css';
+import './PageNav.css';
 
 // 1 ... 4 5 [6] 7 8 ... 42 형태로 표시
 function getPageList(current, total, delta = 2) {
@@ -14,11 +14,11 @@ function getPageList(current, total, delta = 2) {
   return list;
 }
 
-function Pagination({ current, totalPages, hrefFor }) {
+function PageNav({ current, totalPages, hrefFor }) {
   if (totalPages <= 1) return null;
 
   return (
-    <nav className="pagination">
+    <nav className="page-nav">
       {current > 1 && <Link to={hrefFor(current - 1)}>이전</Link>}
       {getPageList(current, totalPages).map((p, idx) =>
         p === '...' ? (
@@ -38,4 +38,4 @@ function Pagination({ current, totalPages, hrefFor }) {
   );
 }
 
-export default Pagination;
+export default PageNav;

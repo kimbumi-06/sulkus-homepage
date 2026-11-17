@@ -10,7 +10,7 @@ BGGNAME = os.environ.get("BGGNAME")
 BASE = "https://boardgamegeek.com/xmlapi2"
 CHUNK = 10          # thing 호출당 게임 수 (최대 20)
 SLEEP = 2.5         # 호출 간 대기(초)
-KO_FILE = "names_translation.json"   # {"BGG ID": "한글명"} 수동 매핑
+KO_FILE = "names_ko.json"   # {"BGG ID": "한글명"} 수동 매핑
 
 HEADERS = {
     "Authorization": f"Bearer {BGG_TOKEN}",

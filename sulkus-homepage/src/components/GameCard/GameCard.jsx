@@ -3,6 +3,7 @@ import * as images from '../../assets/images';
 import { formatRange, firstParagraph } from '../../utils/format';
 import Marquee from '../Marquee/Marquee';
 import MechanicIcon from '../MechanicIcon/MechanicIcon';
+import FadeScroll from '../FadeScroll/FadeScroll';
 
 const MAX_MECHANICS = 3;
 
@@ -78,9 +79,9 @@ function GameCard({ game, onOpen }) {
           <Marquee align='left' className="card__genre">{genre}</Marquee>
         </div>
         <div className="card__desc">
-          <div className="card__desctext_box">
+          <FadeScroll className="card__desctext_box">
             <p className="description-text">{firstParagraph(description)}</p>
-          </div>
+          </FadeScroll>
         </div>
       </footer>
     </article>

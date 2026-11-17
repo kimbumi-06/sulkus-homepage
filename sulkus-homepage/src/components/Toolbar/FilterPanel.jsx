@@ -26,7 +26,7 @@ function FilterPanel({ params, setParams, mechanics }) {
         </label>
       </div>
 
-      <div className="filter__group">
+      <div className="filter__group filter__group--inline">
         <h3>플레이 시간</h3>
         <div className="filter__chips">
           {TIME_OPTIONS.map((opt) => {
@@ -46,10 +46,8 @@ function FilterPanel({ params, setParams, mechanics }) {
         </div>
       </div>
 
-      <div className="filter__group">
-        <h3>
-          메커니즘
-        </h3>
+      <div className="filter__group filter__group--inline">
+        <h3>메커니즘</h3>
         <MechanicSelect
           options={mechanics}
           selected={selectedMechs}
