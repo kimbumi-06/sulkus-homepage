@@ -12,7 +12,7 @@ function Toolbar({ params, setParams, mechanics }) {
   const [open, setOpen] = useState(activeCount > 0);
 
   const resetFilters = () =>
-    setParams({ players: null, time: null, rating: null, mech: null });
+    setParams({ players: null, time: null, mech: null });
 
   return (
     <section className="toolbar">
