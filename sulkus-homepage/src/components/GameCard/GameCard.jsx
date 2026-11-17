@@ -67,7 +67,11 @@ function GameCard({ game }) {
           ))}
           <Marquee align='left' className="card__genre" title={genre}>{genre}</Marquee>
         </div>
-        <p className="card__desc">{firstParagraph(description)}</p>
+        <div className="card__desc">
+          <div className="card__desctext_box">
+            <h className="description-text">{firstParagraph(description)}</h>
+          </div>
+        </div>
       </footer>
     </article>
   );
