@@ -1,6 +1,12 @@
 .mainpage {
   min-height: 100vh;
   background-color: var(--color-bg);
+  /* 위쪽은 살짝 밝고 아래로 갈수록 깊어지는 적색 + 아주 옅은 점무늬 */
+  background-image:
+    radial-gradient(rgba(255, 213, 79, 0.05) 1px, transparent 1px),
+    radial-gradient(ellipse 120% 70% at 50% 0%, var(--color-bg-light) 0%, var(--color-bg) 55%, var(--color-bg-deep) 100%);
+  background-size: 22px 22px, 100% 100%;
+  background-attachment: fixed;
 }
 
 
@@ -10,6 +16,7 @@
   align-items: center;
   padding: 20px 0px;
   background-color: var(--color-bg-header);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
 }
 
 .mainpage__logo {

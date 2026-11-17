@@ -9,6 +9,7 @@
 
 body {
   margin: 0;
+  background-color: var(--color-bg-deep);
   font-family: var(--font-main);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
