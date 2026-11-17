@@ -128,21 +128,151 @@
   color: var(--color-text);
   font-weight: bold;
 }
-.filter__chip small {
-  font-size: 0.7rem;
-  opacity: 0.6;
+/* ---------- 인원수 입력 ---------- */
+.filter__group--inline {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+.filter__group--inline h3 {
+  margin: 0;
 }
 
-.filter__more {
-  height: 30px;
-  padding: 0 12px;
+.filter__players {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-card);
+  font-size: 0.9rem;
+}
+
+.filter__players input {
+  width: 64px;
+  height: 32px;
+  padding: 0 10px;
+  border: 1px solid rgba(255, 213, 79, 0.45);
+  border-radius: 999px;
+  outline: none;
+  background-color: rgba(255, 247, 225, 0.35);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  text-align: center;
+  transition: background-color 0.2s, border-color 0.2s;
+  -moz-appearance: textfield;
+}
+.filter__players input::-webkit-outer-spin-button,
+.filter__players input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+.filter__players input:focus {
+  background-color: var(--color-card);
+  border-color: var(--color-primary);
+}
+
+/* ---------- 메커니즘 검색 선택창 ---------- */
+.mselect {
+  position: relative;
+  max-width: 520px;
+}
+
+.mselect__box {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-height: 38px;
+  padding: 4px 10px;
+  border: 1px solid rgba(255, 213, 79, 0.45);
+  border-radius: 19px;
+  background-color: rgba(255, 247, 225, 0.35);
+  cursor: text;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.mselect__box:focus-within {
+  background-color: var(--color-card);
+  border-color: var(--color-primary);
+}
+
+.mselect__tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 26px;
+  padding: 0 4px 0 10px;
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  font-size: 0.8rem;
+  font-weight: bold;
+}
+.mselect__tag button {
+  width: 18px;
+  height: 18px;
   border: none;
-  background: none;
-  color: var(--color-primary);
-  font-family: inherit;
-  font-size: 0.82rem;
-  text-decoration: underline;
+  border-radius: 50%;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 0.9rem;
+  line-height: 1;
   cursor: pointer;
+}
+.mselect__tag button:hover {
+  background-color: rgba(49, 54, 23, 0.15);
+}
+
+.mselect__input {
+  flex: 1;
+  min-width: 100px;
+  height: 28px;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-text);
+  font-size: 0.9rem;
+}
+.mselect__input::placeholder {
+  color: rgba(49, 54, 23, 0.65);
+}
+
+.mselect__list {
+  position: absolute;
+  top: calc(100% + 4px);
+  left: 0;
+  right: 0;
+  z-index: 20;
+  max-height: 260px;
+  margin: 0;
+  padding: 4px;
+  overflow-y: auto;
+  list-style: none;
+  border-radius: 14px;
+  background-color: var(--color-card);
+  border: 1px solid var(--color-primary);
+  scrollbar-width: thin;
+  scrollbar-color: var(--color-accent) transparent;
+}
+
+.mselect__list li {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 7px 12px;
+  border-radius: 10px;
+  color: var(--color-text);
+  font-size: 0.88rem;
+  cursor: pointer;
+}
+.mselect__list li.highlight {
+  background-color: rgba(255, 213, 79, 0.45);
+}
+.mselect__list li small {
+  font-size: 0.75rem;
+  opacity: 0.6;
+}
+.mselect__list .mselect__empty {
+  cursor: default;
+  opacity: 0.6;
 }
 
 /* ---------- 검색창: 누르면(포커스) 진해짐 ---------- */
