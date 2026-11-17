@@ -1,8 +1,9 @@
 import './MainPage.css';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import GameCard from '../../components/GameCard/GameCard';
 import Pagination from '../../components/Pagination/Pagination';
+import GameModal from '../../components/GameModal/GameModal';
 import { useGameQuery } from '../../hooks/useGameQuery';
 import { cleanGames } from '../../utils/gameQuery';
 import * as images from '../../assets/images/index';
@@ -16,6 +17,8 @@ const games = cleanGames(allGames);
 function MainPage() {
   const { pageGames, totalPages, current, isValidPage, pageHref } =
     useGameQuery(games, PAGE_SIZE);
+  const [selected, setSelected] = useState(null);
+  const closeModal = useCallback(() => setSelected(null), []);
 
   useEffect(() => {
     window.scrollTo(0, 0);
@@ -34,11 +37,13 @@ function MainPage() {
 
       <main className="mainpage__list">
         {pageGames.map((game) => (
-          <GameCard key={game.id} game={game} />
+          <GameCard key={game.id} game={game} onOpen={setSelected} />
         ))}
       </main>
 
       <Pagination current={current} totalPages={totalPages} hrefFor={pageHref} />
+
+      <GameModal game={selected} onClose={closeModal} />
     </div>
   );
 }
