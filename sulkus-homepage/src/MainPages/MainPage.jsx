@@ -1,7 +1,7 @@
 import './MainPage.css';
 import GameCard from '../components/GameCard/GameCard'
 import * as images from '../assets/images/index'
-import games from '../data/games.json'
+import games from '../data/games.ko.json'
 
 
 function MainPage() {

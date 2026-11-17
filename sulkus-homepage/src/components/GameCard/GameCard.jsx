@@ -8,11 +8,11 @@ function GameCard({ game }) {
   const {
     name_ko, name_en, rating, rank,
     min_players, max_players, min_time, max_time,
-    mechanics, categories, description, image,
+    mechanics_ko = [], categories_ko = [], description, image,
   } = game;
 
-  const mechanicList = splitList(mechanics).slice(0, MAX_MECHANICS);
-  const genre = splitList(categories).join(', ');
+  const mechanicList = mechanics_ko.slice(0, MAX_MECHANICS);
+  const genre = categories_ko.join(', ');
 
   return (
     <article className="card">
