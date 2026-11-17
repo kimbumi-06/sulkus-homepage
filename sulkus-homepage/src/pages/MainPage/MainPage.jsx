@@ -2,7 +2,7 @@ import './MainPage.css';
 import { useCallback, useEffect, useState } from 'react';
 import { Link, Navigate } from 'react-router-dom';
 import GameCard from '../../components/GameCard/GameCard';
-import Pagination from '../../components/Pagination/Pagination';
+import PageNav from '../../components/PageNav/PageNav';
 import GameModal from '../../components/GameModal/GameModal';
 import Toolbar from '../../components/Toolbar/Toolbar';
 import { useGameQuery } from '../../hooks/useGameQuery';
@@ -54,7 +54,7 @@ function MainPage() {
         ))}
       </main>
 
-      <Pagination current={current} totalPages={totalPages} hrefFor={pageHref} />
+      <PageNav current={current} totalPages={totalPages} hrefFor={pageHref} />
 
       <GameModal game={selected} onClose={closeModal} />
     </div>

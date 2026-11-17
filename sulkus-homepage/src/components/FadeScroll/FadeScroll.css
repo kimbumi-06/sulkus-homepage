@@ -1,0 +1,14 @@
+.fade-scroll {
+  overflow-y: auto;
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.fade-scroll::-webkit-scrollbar {
+  display: none;
+}
+
+/* 아래에 글이 더 있을 때만 밑부분을 투명하게 */
+.fade-scroll--more {
+  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 20px), transparent 100%);
+  mask-image: linear-gradient(to bottom, #000 calc(100% - 20px), transparent 100%);
+}

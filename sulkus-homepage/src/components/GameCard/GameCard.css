@@ -179,22 +179,14 @@
   scrollbar-color: #FFB366 transparent;
 }
 
+/* 스크롤·밑부분 흐림은 FadeScroll 컴포넌트가 처리 */
 .card__desctext_box {
   height: 50px;
   margin: 10px 10px;
-  overflow-y: auto;
-
-  scrollbar-width: none;
-
-  /*
-  -webkit-mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
-  mask-image: linear-gradient(to bottom, #000 calc(100% - 30px), transparent 100%);
-  */
 }
 
 .description-text {
   margin: 0;
-  height: 100%;
   font-size: 0.75rem;
   color: #313617;
   line-height: 1.4;
