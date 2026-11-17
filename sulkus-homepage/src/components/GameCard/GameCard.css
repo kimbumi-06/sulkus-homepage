@@ -160,9 +160,7 @@
   background-color: var(--color-primary);
   font-size: 0.75rem;
   line-height: 22px;
-  white-space: nowrap;
   overflow: hidden;
-  text-overflow: ellipsis;
 }
 
 .card__desc {

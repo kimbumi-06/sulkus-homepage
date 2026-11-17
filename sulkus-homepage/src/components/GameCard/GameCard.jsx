@@ -1,6 +1,7 @@
 import './GameCard.css';
 import * as images from '../../assets/images';
 import { formatRange, splitList, firstParagraph } from '../../utils/format';
+import Marquee from '../Marquee/Marquee';
 
 const MAX_MECHANICS = 3;
 
@@ -22,10 +23,10 @@ function GameCard({ game }) {
           <span className="card__rating-text">{Number(rating).toFixed(1)}</span>
         </div>
         <div className="card__title">
-          <div className="card__title-main" title={name_ko || name_en}>
+          <Marquee align='center' className="card__title-main" title={name_ko || name_en}>
             {name_ko || name_en}
-          </div>
-          {name_ko && <div className="card__title-sub">{name_en}</div>}
+          </Marquee>
+          {name_ko && <Marquee align='center' className="card__title-sub">{name_en}</Marquee>}
         </div>
       </header>
 
@@ -60,11 +61,11 @@ function GameCard({ game }) {
       <footer className="card__footer">
         <div className="card__tags">
           {mechanicList.map((m) => (
-            <span className="card__mechanic" key={m} title={m}>
+            <div className="card__mechanic" key={m} title={m}>
               {m.charAt(0)}
-            </span>
+            </div>
           ))}
-          <span className="card__genre" title={genre}>{genre}</span>
+          <Marquee align='left' className="card__genre" title={genre}>{genre}</Marquee>
         </div>
         <p className="card__desc">{firstParagraph(description)}</p>
       </footer>
