@@ -9,11 +9,17 @@
 
 body {
   margin: 0;
-  background-color: var(--color-bg-deep);
+  background-color: var(--color-bg);
   font-family: var(--font-main);
   color: var(--color-text);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
+
+button,
+input,
+select {
+  font-family: inherit;
 }
 
 code {

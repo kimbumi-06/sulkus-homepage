@@ -1,32 +1,28 @@
 .mainpage {
   min-height: 100vh;
   background-color: var(--color-bg);
-  /* 위쪽은 살짝 밝고 아래로 갈수록 깊어지는 적색 + 아주 옅은 점무늬 */
-  background-image:
-    radial-gradient(rgba(255, 213, 79, 0.05) 1px, transparent 1px),
-    radial-gradient(ellipse 120% 70% at 50% 0%, var(--color-bg-light) 0%, var(--color-bg) 55%, var(--color-bg-deep) 100%);
-  background-size: 22px 22px, 100% 100%;
-  background-attachment: fixed;
 }
 
-
-.mainpage__header {
-  display: flex;
-  justify-content: center;
+/* 왼쪽 위 작은 로고 */
+.mainpage__brand {
+  display: inline-flex;
   align-items: center;
-  padding: 20px 0px;
-  background-color: var(--color-bg-header);
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
+  gap: 8px;
+  padding: 16px 20px 0;
+  color: var(--color-card);
+  text-decoration: none;
 }
 
 .mainpage__logo {
-  width: 50px;
-  height: 50px;
-  margin-right: 10px;
+  width: 30px;
+  height: 30px;
 }
 
-.mainpage__title {
-  margin: 0;
+.mainpage__brand-name {
+  font-family: var(--font-eng);
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .mainpage__list {

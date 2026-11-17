@@ -6,8 +6,6 @@
   --color-bg:  #ffb264; 
   */
   --color-bg:  #820200;
-  --color-bg-light: #a3170c;
-  --color-bg-deep:  #4f0100;
   
   --color-bg-header:  #ffffffd9;
   --color-card: #FFF7E1;
@@ -17,5 +15,5 @@
 
   --font-main: "Cafe24PROSlimAir", "Cafe24PROSlimFit", -apple-system,
     BlinkMacSystemFont, "Segoe UI", "Roboto", sans-serif;
-  --font-eng: "AmaticSC-Bold", sans-serif;
+  --font-eng: "Amatic SC", sans-serif;
 }
