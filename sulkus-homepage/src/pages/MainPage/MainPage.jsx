@@ -6,7 +6,7 @@ import Pagination from '../../components/Pagination/Pagination';
 import GameModal from '../../components/GameModal/GameModal';
 import Toolbar from '../../components/Toolbar/Toolbar';
 import { useGameQuery } from '../../hooks/useGameQuery';
-import { cleanGames } from '../../utils/gameQuery';
+import { cleanGames, collectMechanics } from '../../utils/gameQuery';
 import * as images from '../../assets/images/index';
 import allGames from '../../data/games.ko.json';
 
@@ -14,6 +14,7 @@ const PAGE_SIZE = 12;
 
 // 모듈 로드 시 1회만 계산
 const games = cleanGames(allGames);
+const mechanics = collectMechanics(games);
 
 function MainPage() {
   const { params, setParams, pageGames, totalCount, totalPages, current, isValidPage, pageHref } =
@@ -36,7 +37,12 @@ function MainPage() {
         <h1 className="mainpage__title">보드게임 리스트</h1>
       </header>
 
-      <Toolbar params={params} setParams={setParams} totalCount={totalCount} />
+      <Toolbar
+        params={params}
+        setParams={setParams}
+        totalCount={totalCount}
+        mechanics={mechanics}
+      />
 
       {totalCount === 0 && (
         <p className="mainpage__empty">조건에 맞는 게임이 없어요.</p>
