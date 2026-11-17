@@ -19,6 +19,8 @@
   border-radius: 24px;
   background-color: var(--color-card);
   animation: modal-pop 0.2s ease-out;
+  /* 글자 위에서도 텍스트 커서(I) 대신 기본 화살표. 선택·Ctrl+F는 그대로 가능 */
+  cursor: default;
   scrollbar-width: thin;
   scrollbar-color: var(--color-accent) transparent;
 }
