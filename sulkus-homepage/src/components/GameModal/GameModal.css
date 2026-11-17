@@ -21,8 +21,12 @@
   animation: modal-pop 0.2s ease-out;
   /* 글자 위에서도 텍스트 커서(I) 대신 기본 화살표. 선택·Ctrl+F는 그대로 가능 */
   cursor: default;
-  scrollbar-width: thin;
-  scrollbar-color: var(--color-accent) transparent;
+  /* 스크롤은 되지만 스크롤바는 숨김 */
+  scrollbar-width: none;
+  -ms-overflow-style: none;
+}
+.modal::-webkit-scrollbar {
+  display: none;
 }
 
 .modal__close {
@@ -165,12 +169,13 @@
 .modal__mech-icon {
   flex-shrink: 0;
 }
-/* 메커니즘 칩에 마우스를 올리면 설명 표시 */
+/* 메커니즘 칩에 마우스를 올리면 칩 목록 아래쪽에 설명 표시 (글씨 안 가리게) */
 .modal__chips .modal__mech-desc {
   position: absolute;
   left: 0;
   right: 0;
-  bottom: calc(100% + 6px);
+  top: calc(100% + 6px);
+  z-index: 5;
   padding: 6px 10px;
   border-radius: 10px;
   background-color: rgba(49, 54, 23, 0.92);
