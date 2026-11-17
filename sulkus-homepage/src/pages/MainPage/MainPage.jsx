@@ -4,6 +4,7 @@ import { Navigate } from 'react-router-dom';
 import GameCard from '../../components/GameCard/GameCard';
 import Pagination from '../../components/Pagination/Pagination';
 import GameModal from '../../components/GameModal/GameModal';
+import Toolbar from '../../components/Toolbar/Toolbar';
 import { useGameQuery } from '../../hooks/useGameQuery';
 import { cleanGames } from '../../utils/gameQuery';
 import * as images from '../../assets/images/index';
@@ -15,7 +16,7 @@ const PAGE_SIZE = 12;
 const games = cleanGames(allGames);
 
 function MainPage() {
-  const { pageGames, totalPages, current, isValidPage, pageHref } =
+  const { params, setParams, pageGames, totalCount, totalPages, current, isValidPage, pageHref } =
     useGameQuery(games, PAGE_SIZE);
   const [selected, setSelected] = useState(null);
   const closeModal = useCallback(() => setSelected(null), []);
@@ -34,6 +35,12 @@ function MainPage() {
         <img className="mainpage__logo" src={images.logo} alt="Sulkus" />
         <h1 className="mainpage__title">보드게임 리스트</h1>
       </header>
+
+      <Toolbar params={params} setParams={setParams} totalCount={totalCount} />
+
+      {totalCount === 0 && (
+        <p className="mainpage__empty">조건에 맞는 게임이 없어요.</p>
+      )}
 
       <main className="mainpage__list">
         {pageGames.map((game) => (

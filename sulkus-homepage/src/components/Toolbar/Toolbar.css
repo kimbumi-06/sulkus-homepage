@@ -1,0 +1,116 @@
+.toolbar {
+  width: min(1100px, 100%);
+  margin: 0 auto;
+  padding: 28px 16px 0;
+}
+
+.toolbar__row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  gap: 12px;
+}
+
+.toolbar__count {
+  margin: 10px 0 0;
+  text-align: center;
+  color: var(--color-card);
+  font-size: 0.85rem;
+  opacity: 0.8;
+}
+
+/* ---------- 검색창: 누르면(포커스) 진해짐 ---------- */
+.searchbar {
+  position: relative;
+  display: flex;
+  align-items: center;
+  flex: 1 1 280px;
+  max-width: 420px;
+  height: 42px;
+  padding: 0 14px;
+  border-radius: 999px;
+  border: 2px solid transparent;
+  background-color: rgba(255, 247, 225, 0.35);
+  transition: background-color 0.2s, border-color 0.2s, box-shadow 0.2s;
+}
+
+.searchbar:hover {
+  background-color: rgba(255, 247, 225, 0.5);
+}
+
+.searchbar:focus-within {
+  background-color: var(--color-card);
+  border-color: var(--color-primary);
+  box-shadow: 0 0 0 4px rgba(255, 213, 79, 0.25);
+}
+
+.searchbar__icon {
+  font-size: 0.9rem;
+  margin-right: 8px;
+  opacity: 0.7;
+}
+
+.searchbar__input {
+  flex: 1;
+  min-width: 0;
+  height: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  color: var(--color-text);
+  font-family: inherit;
+  font-size: 0.95rem;
+}
+
+.searchbar__input::placeholder {
+  color: rgba(49, 54, 23, 0.65);
+}
+
+/* 브라우저 기본 X 버튼 숨김 (직접 만든 버튼 사용) */
+.searchbar__input::-webkit-search-cancel-button {
+  display: none;
+}
+
+.searchbar__clear {
+  width: 24px;
+  height: 24px;
+  border: none;
+  border-radius: 50%;
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  font-size: 1rem;
+  line-height: 1;
+  cursor: pointer;
+}
+
+/* ---------- 정렬 토글 ---------- */
+.sortselect {
+  display: inline-flex;
+  padding: 4px;
+  border-radius: 999px;
+  background-color: rgba(255, 247, 225, 0.15);
+}
+
+.sortselect button {
+  height: 34px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-primary);
+  font-family: inherit;
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: background-color 0.2s, color 0.2s;
+}
+
+.sortselect button:hover {
+  background-color: rgba(255, 213, 79, 0.12);
+}
+
+.sortselect button.active {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  font-weight: bold;
+}
