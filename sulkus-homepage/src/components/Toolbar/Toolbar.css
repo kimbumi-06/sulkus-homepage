@@ -1,15 +1,35 @@
+/* 한 줄 헤더: [로고] [검색창] [필터] ........ [정렬] */
 .toolbar {
-  width: min(1100px, 100%);
-  margin: 0 auto;
-  padding: 28px 16px 0;
+  padding: 16px 20px 0;
 }
 
 .toolbar__row {
   display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
   align-items: center;
   gap: 12px;
+}
+
+.toolbar__row > * {
+  flex-shrink: 0;
+}
+
+/* 정렬은 오른쪽 끝으로 */
+.toolbar__row .sortselect {
+  margin-left: auto;
+}
+
+/* 좁은 화면: 로고+정렬 한 줄, 검색+필터 다음 줄 */
+@media (max-width: 720px) {
+  .toolbar__row {
+    flex-wrap: wrap;
+  }
+  .toolbar__row .searchbar {
+    order: 3;
+    flex: 1 1 auto;
+  }
+  .toolbar__row .toolbar__filter-btn {
+    order: 4;
+  }
 }
 
 .toolbar__status {
@@ -280,8 +300,8 @@
   position: relative;
   display: flex;
   align-items: center;
-  flex: 1 1 280px;
-  max-width: 420px;
+  flex: 0 1 380px;
+  min-width: 160px;
   height: 42px;
   padding: 0 14px;
   border-radius: 999px;

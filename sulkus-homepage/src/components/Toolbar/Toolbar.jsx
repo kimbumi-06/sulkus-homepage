@@ -6,7 +6,7 @@ import SortSelect from './SortSelect';
 import FilterPanel from './FilterPanel';
 import { DEFAULT_SORT, countActiveFilters } from '../../utils/gameQuery';
 
-function Toolbar({ params, setParams, mechanics }) {
+function Toolbar({ brand, params, setParams, mechanics }) {
   const sort = params.get('sort') || DEFAULT_SORT;
   const activeCount = countActiveFilters(params);
   // 주소에 필터가 들어 있는 채로 들어오면 패널을 펼친 상태로 시작
@@ -16,15 +16,12 @@ function Toolbar({ params, setParams, mechanics }) {
     setParams({ players: null, time: null, mech: null });
 
   return (
-    <section className="toolbar">
+    <header className="toolbar">
       <div className="toolbar__row">
+        {brand}
         <SearchBar
           value={params.get('q') || ''}
           onChange={(q) => setParams({ q: q.trim() ? q : null })}
-        />
-        <SortSelect
-          value={sort}
-          onChange={(v) => setParams({ sort: v === DEFAULT_SORT ? null : v })}
         />
         <button
           type="button"
@@ -37,6 +34,10 @@ function Toolbar({ params, setParams, mechanics }) {
           {activeCount > 0 && <span className="toolbar__badge">{activeCount}</span>}
           <ChevronDown className="toolbar__caret" size={16} strokeWidth={1.75} aria-hidden="true" />
         </button>
+        <SortSelect
+          value={sort}
+          onChange={(v) => setParams({ sort: v === DEFAULT_SORT ? null : v })}
+        />
       </div>
 
       {open && (
@@ -50,7 +51,7 @@ function Toolbar({ params, setParams, mechanics }) {
           </button>
         </div>
       )}
-    </section>
+    </header>
   );
 }
 
