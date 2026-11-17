@@ -48,7 +48,7 @@ function FilterPanel({ params, setParams, mechanics }) {
 
       <div className="filter__group">
         <h3>
-          메커니즘 <span className="filter__hint">(선택한 것을 모두 가진 게임)</span>
+          메커니즘
         </h3>
         <MechanicSelect
           options={mechanics}

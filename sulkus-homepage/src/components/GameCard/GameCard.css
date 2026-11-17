@@ -197,7 +197,7 @@
   height: 100%;
   font-size: 0.75rem;
   color: #313617;
-  line-height: 1;
+  line-height: 1.4;
   word-break: keep-all;        /* 한글 단어 단위 줄바꿈 */
   overflow-wrap: anywhere;
 
