@@ -1,11 +1,11 @@
 import './GameCard.css';
 import * as images from '../../assets/images';
-import { formatRange, splitList, firstParagraph } from '../../utils/format';
+import { formatRange, firstParagraph } from '../../utils/format';
 import Marquee from '../Marquee/Marquee';
 
 const MAX_MECHANICS = 3;
 
-function GameCard({ game }) {
+function GameCard({ game, onOpen }) {
   const {
     name_ko, name_en, rating, rank,
     min_players, max_players, min_time, max_time,
@@ -16,14 +16,29 @@ function GameCard({ game }) {
   const genre = categories_ko.join(', ');
 
   return (
-    <article className="card">
+    <article
+      className="card"
+      role="button"
+      tabIndex={0}
+      onClick={() => {
+        // 글자를 드래그해서 선택 중이면 모달을 열지 않음
+        if (window.getSelection()?.toString()) return;
+        onOpen?.(game);
+      }}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          onOpen?.(game);
+        }
+      }}
+    >
       <header className="card__header">
         <div className="card__rating">
           <img className="card__rating-bg" src={images.rating} alt="" />
           <span className="card__rating-text">{Number(rating).toFixed(1)}</span>
         </div>
         <div className="card__title">
-          <Marquee align='center' className="card__title-main" title={name_ko || name_en}>
+          <Marquee align='center' className="card__title-main">
             {name_ko || name_en}
           </Marquee>
           {name_ko && <Marquee align='center' className="card__title-sub">{name_en}</Marquee>}
@@ -57,15 +72,15 @@ function GameCard({ game }) {
       <footer className="card__footer">
         <div className="card__tags">
           {mechanicList.map((m) => (
-            <div className="card__mechanic" key={m} title={m}>
+            <div className="card__mechanic" key={m}>
               {m.charAt(0)}
             </div>
           ))}
-          <Marquee align='left' className="card__genre" title={genre}>{genre}</Marquee>
+          <Marquee align='left' className="card__genre">{genre}</Marquee>
         </div>
         <div className="card__desc">
           <div className="card__desctext_box">
-            <h className="description-text">{firstParagraph(description)}</h>
+            <p className="description-text">{firstParagraph(description)}</p>
           </div>
         </div>
       </footer>
