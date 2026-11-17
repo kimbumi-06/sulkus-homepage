@@ -1,14 +1,14 @@
-import { HashRouter, Routes, Route, Navigate } from 'react-router-dom';
+import { BrowserRouter, Routes, Route, Navigate } from 'react-router-dom';
 import MainPage from './MainPages/MainPage';
 
 function App() {
   return (
-    <HashRouter>
+    <BrowserRouter>
       <Routes>
-        <Route path="/page/:page" element={<MainPage />} />
-        <Route path="*" element={<Navigate to="/page/1" replace />} />
+        <Route path="/" element={<MainPage />} />
+        <Route path="*" element={<Navigate to="/?page=1" replace />} />
       </Routes>
-    </HashRouter>
+    </BrowserRouter>
   );
 }
 

@@ -1,6 +1,6 @@
 import './MainPage.css';
 import { useEffect } from 'react';
-import { useParams, Link, Navigate } from 'react-router-dom';
+import { useSearchParams, Link, Navigate } from 'react-router-dom';
 import GameCard from '../components/GameCard/GameCard';
 import * as images from '../assets/images/index';
 import allGames from '../data/games.ko.json';
@@ -28,16 +28,16 @@ function getPageList(current, total, delta = 2) {
 }
 
 function MainPage() {
-  const { page } = useParams();
+  const [searchParams] = useSearchParams();
   const totalPages = Math.max(1, Math.ceil(games.length / PAGE_SIZE));
-  const current = Number(page);
+  const current = Number(searchParams.get('page') ?? 1);
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [current]);
 
   if (!Number.isInteger(current) || current < 1 || current > totalPages) {
-    return <Navigate to="/page/1" replace />;
+    return <Navigate to="/?page=1" replace />;
   }
 
   const start = (current - 1) * PAGE_SIZE;
@@ -57,21 +57,21 @@ function MainPage() {
       </main>
 
       <nav className="mainpage__pagination">
-        {current > 1 && <Link to={`/page/${current - 1}`}>이전</Link>}
+        {current > 1 && <Link to={`/?page=${current - 1}`}>이전</Link>}
         {getPageList(current, totalPages).map((p, idx) =>
           p === '...' ? (
             <span key={`dots-${idx}`}>…</span>
           ) : (
             <Link
               key={p}
-              to={`/page/${p}`}
+              to={`/?page=${p}`}
               className={p === current ? 'active' : ''}
             >
               {p}
             </Link>
           )
         )}
-        {current < totalPages && <Link to={`/page/${current + 1}`}>다음</Link>}
+        {current < totalPages && <Link to={`/?page=${current + 1}`}>다음</Link>}
       </nav>
     </div>
   );
