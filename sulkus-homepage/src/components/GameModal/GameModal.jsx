@@ -3,6 +3,7 @@ import { createPortal } from 'react-dom';
 import './GameModal.css';
 import * as images from '../../assets/images';
 import { formatRange } from '../../utils/format';
+import mechanicInfo from '../../data/mechanicInfo';
 
 function GameModal({ game, onClose }) {
   // Esc로 닫기 + 모달 떠 있는 동안 뒤 페이지 스크롤 막기
@@ -91,7 +92,17 @@ function GameModal({ game, onClose }) {
               <section>
                 <h3>메커니즘</h3>
                 <div className="modal__chips modal__chips--mechanic">
-                  {mechanics_ko.map((m) => <span key={m}>{m}</span>)}
+                  {mechanics_ko.map((m) => (
+                    <span key={m} className="modal__mech">
+                      {mechanicInfo[m]?.icon && (
+                        <span className="modal__mech-icon">{mechanicInfo[m].icon}</span>
+                      )}
+                      {m}
+                      {mechanicInfo[m]?.desc && (
+                        <span className="modal__mech-desc">{mechanicInfo[m].desc}</span>
+                      )}
+                    </span>
+                  ))}
                 </div>
               </section>
             )}

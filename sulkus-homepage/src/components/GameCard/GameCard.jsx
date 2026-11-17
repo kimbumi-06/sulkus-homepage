@@ -2,6 +2,7 @@ import './GameCard.css';
 import * as images from '../../assets/images';
 import { formatRange, firstParagraph } from '../../utils/format';
 import Marquee from '../Marquee/Marquee';
+import MechanicIcon from '../MechanicIcon/MechanicIcon';
 
 const MAX_MECHANICS = 3;
 
@@ -72,9 +73,7 @@ function GameCard({ game, onOpen }) {
       <footer className="card__footer">
         <div className="card__tags">
           {mechanicList.map((m) => (
-            <div className="card__mechanic" key={m}>
-              {m.charAt(0)}
-            </div>
+            <MechanicIcon className="card__mechanic" key={m} name={m} />
           ))}
           <Marquee align='left' className="card__genre">{genre}</Marquee>
         </div>
