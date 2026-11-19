@@ -43,7 +43,7 @@ class FakeSheet {
   clearContents() { this.data.clear(); }
 }
 
-export function createFakes({ editors = ['owner@club.kr'], bgg, claude } = {}) {
+export function createFakes({ editors = ['owner@club.kr'], bgg } = {}) {
   const sheets = new Map();
   let nextId = 1;
   const spreadsheet = {
@@ -60,7 +60,7 @@ export function createFakes({ editors = ['owner@club.kr'], bgg, claude } = {}) {
   const props = new Map();
   const cache = new Map();
   const triggers = [];
-  const log = { claude: [], bgg: [] };
+  const log = { bgg: [] };
 
   const response = (code, text, headers = {}) => ({
     getResponseCode: () => code,
@@ -72,11 +72,6 @@ export function createFakes({ editors = ['owner@club.kr'], bgg, claude } = {}) {
     if (url.startsWith('https://boardgamegeek.com/')) {
       log.bgg.push(url);
       return bgg(url);
-    }
-    if (url === 'https://api.anthropic.com/v1/messages') {
-      const body = JSON.parse(opts.payload);
-      log.claude.push({ body, headers: opts.headers });
-      return claude(body);
     }
     throw new Error(`예상 못 한 요청 ${url}`);
   };

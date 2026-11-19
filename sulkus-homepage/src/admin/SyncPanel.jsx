@@ -6,16 +6,13 @@ const STEP_LABEL = {
   collection: 'BGG 컬렉션',
   things: 'BGG 게임 정보',
   merge: '시트 정리',
-  terms: '장르·메커니즘 번역',
-  names: '제목 번역',
-  descriptions: '설명 번역',
   publish: '사이트에 반영',
   done: '완료',
 };
 
 const formatTime = (v) => (v ? new Date(v).toLocaleString('ko-KR') : '');
 
-/** 동기화(BGG 가져오기 + 번역 + 반영) / 지금 반영 버튼 + 진행 상황 */
+/** 동기화(BGG 가져오기 + 반영) / 지금 반영 버튼 + 진행 상황 */
 function SyncPanel({ onChanged }) {
   const [status, setStatus] = useState(null);
   const [busy, setBusy] = useState('');
@@ -57,7 +54,7 @@ function SyncPanel({ onChanged }) {
 
   const run = async (action) => {
     if (action === 'sync' && !window.confirm(
-      'BGG에서 목록을 새로 가져오고, 번역 안 된 것을 AI로 번역해서 사이트 데이터를 덮어써요.\n처음엔 몇 분 걸리고, 창을 닫아도 계속 진행돼요. 진행할까요?'
+      'BGG에서 목록을 새로 가져와서 시트와 사이트 데이터를 바꿔요. (시트에 쓴 한글은 그대로 유지)\n몇 분 걸릴 수 있고, 창을 닫아도 계속 진행돼요. 진행할까요?'
     )) return;
     setBusy(action);
     setMessage('');
@@ -85,7 +82,7 @@ function SyncPanel({ onChanged }) {
       <div className="sync__row">
         <button type="button" className="admin__btn" onClick={() => run('sync')} disabled={running || !!busy}>
           <RefreshCw size={15} strokeWidth={1.75} className={running || busy === 'sync' ? 'sync__spin' : ''} />
-          {running ? '동기화 중…' : 'BGG 동기화 (가져오기 + 번역 + 반영)'}
+          {running ? '동기화 중…' : 'BGG 동기화 (가져오기 + 반영)'}
         </button>
         <button
           type="button"

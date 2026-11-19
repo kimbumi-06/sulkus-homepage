@@ -11,20 +11,18 @@ const SHEET = {
 
 // 게임 시트 열 (1부터)
 const G = {
-  id: 1, nameEn: 2, nameKoEdit: 3, descKoEdit: 4, nameKoAuto: 5, descKoAuto: 6, descEn: 7, descHash: 8,
+  id: 1, nameEn: 2, nameKoEdit: 3, descKoEdit: 4, nameKoBgg: 5, descEn: 6,
 };
 const GAME_HEADERS = [
-  'BGG ID', '영문 제목', '한글 제목 (수정)', '한글 설명 (수정)',
-  '자동 한글 제목', '자동 한글 설명', '영문 설명', '설명 해시',
+  'BGG ID', '영문 제목', '한글 제목 (수정)', '한글 설명 (수정)', 'BGG 한글 이름', '영문 설명',
 ];
 
 // 사전 시트 열
 const T = {
-  type: 1, en: 2, koEdit: 3, descEdit: 4, koBase: 5, descBase: 6, koAi: 7, descAi: 8, count: 9,
+  type: 1, en: 2, koEdit: 3, descEdit: 4, koBase: 5, descBase: 6, count: 7,
 };
 const TERM_HEADERS = [
-  '종류', '영문', '한글 (수정)', '설명 (수정)',
-  '기본 사전 한글', '기본 사전 설명', '자동 한글', '자동 설명', '게임 수',
+  '종류', '영문', '한글 (수정)', '설명 (수정)', '기본 사전 한글', '기본 사전 설명', '게임 수',
 ];
 const TERM_TYPE_LABEL = { mechanics: '메커니즘', categories: '장르' };
 const TERM_TYPE_BY_LABEL = { 메커니즘: 'mechanics', 장르: 'categories' };
@@ -48,6 +46,10 @@ function ensureSheet_(name, headers, hidden) {
   let sh = sheet_(name);
   if (!sh) sh = ss_().insertSheet(name);
   if (headers) {
+    // 예전 버전의 남는 머리글 칸 지우기
+    if (sh.getLastColumn() > headers.length) {
+      sh.getRange(1, headers.length + 1, 1, sh.getLastColumn() - headers.length).clearContent();
+    }
     sh.getRange(1, 1, 1, headers.length).setValues([headers]).setFontWeight('bold');
     sh.setFrozenRows(1);
   }

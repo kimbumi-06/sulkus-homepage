@@ -41,7 +41,7 @@ function GamesView({ games, sheet }) {
           {[
             ['all', `전체 ${games.length}`],
             ['admin', '운영진 수정'],
-            ['missing', '번역 빠진 것'],
+            ['missing', '한글 빠진 것'],
           ].map(([id, label]) => (
             <button key={id} type="button" className={filter === id ? 'active' : ''} onClick={() => setFilter(id)}>
               {label}

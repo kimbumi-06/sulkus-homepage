@@ -1,5 +1,5 @@
 // BGG 동기화 작업 (Apps Script 실행 시간 6분 제한 때문에 조금씩 나눠서 진행하고, 남으면 이어서 실행)
-//   collection → things → merge → terms → names → descriptions → publish → done
+//   collection → things → merge → publish → done
 
 const JOB_KEY = 'SYNC_JOB';
 const SLICE_MS = 4.5 * 60 * 1000; // 한 번 실행에 쓸 시간
@@ -139,7 +139,7 @@ function stepMerge_(job) {
   const raw = readBggGames_();
   writeRows_(SHEET.games, GAME_HEADERS.length, mergeGameRows_(raw, readRows_(SHEET.games, GAME_HEADERS.length)));
   writeRows_(SHEET.terms, TERM_HEADERS.length, mergeTermRows_(raw, readRows_(SHEET.terms, TERM_HEADERS.length), BUILTIN));
-  return Object.assign(job, { step: 'terms', cursor: 0, done: 0, total: 0, message: '장르·메커니즘 번역' });
+  return Object.assign(job, { step: 'publish', cursor: 0, done: 0, total: 0, message: '사이트에 반영하는 중' });
 }
 
 function stepPublish_(job) {
@@ -156,9 +156,6 @@ function syncSteps_() {
     collection: stepCollection_,
     things: stepThings_,
     merge: stepMerge_,
-    terms: stepTerms_, // Translate.gs
-    names: stepNames_,
-    descriptions: stepDescriptions_,
     publish: stepPublish_,
   };
 }

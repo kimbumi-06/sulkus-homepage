@@ -3,7 +3,7 @@
 function onOpen() {
   SpreadsheetApp.getUi()
     .createMenu('Sulkus')
-    .addItem('BGG 동기화 (가져오기 + 번역 + 반영)', 'menuSync')
+    .addItem('BGG 동기화 (가져오기 + 반영)', 'menuSync')
     .addItem('수정 내용 사이트에 반영', 'menuPublish')
     .addItem('진행 상황 보기', 'menuStatus')
     .addSeparator()
@@ -34,8 +34,8 @@ function menuSync() {
   const ui = SpreadsheetApp.getUi();
   const ok = ui.alert(
     'BGG 동기화',
-    'BGG에서 목록을 새로 가져오고, 번역 안 된 것을 AI로 번역해서 사이트 데이터를 덮어써요.\n' +
-      '처음엔 몇 분 걸리고, 시간이 모자라면 1분 뒤 자동으로 이어서 진행돼요. 진행할까요?',
+    'BGG에서 목록을 새로 가져와서 시트와 사이트 데이터를 바꿔요. (시트에 쓴 한글은 그대로 유지)\n' +
+      '몇 분 걸릴 수 있고, 시간이 모자라면 1분 뒤 자동으로 이어서 진행돼요. 진행할까요?',
     ui.ButtonSet.OK_CANCEL
   );
   if (ok !== ui.Button.OK) return;
@@ -76,14 +76,12 @@ function setup() {
   terms.getRange(1, 1, 1, TERM_HEADERS.length).setBackground('#FFD54F');
   games.setColumnWidths(1, GAME_HEADERS.length, 160);
   games.setColumnWidth(G.descKoEdit, 360);
-  games.setColumnWidth(G.descKoAuto, 360);
   games.setColumnWidth(G.descEn, 360);
-  games.hideColumns(G.descHash);
   terms.setColumnWidths(1, TERM_HEADERS.length, 150);
   terms.setColumnWidth(T.descEdit, 300);
 
   // 자동 열을 실수로 고치지 않도록 (경고만)
-  [[games, G.nameKoAuto, GAME_HEADERS.length - G.nameKoAuto + 1], [games, 1, 2], [terms, 1, 2], [terms, T.koBase, TERM_HEADERS.length - T.koBase + 1]]
+  [[games, G.nameKoBgg, GAME_HEADERS.length - G.nameKoBgg + 1], [games, 1, 2], [terms, 1, 2], [terms, T.koBase, TERM_HEADERS.length - T.koBase + 1]]
     .forEach(([sh, col, width]) => {
       sh.getRange(1, col, sh.getMaxRows(), width).protect()
         .setDescription('동기화가 채우는 열이에요. 고치려면 노란 열에 쓰세요.')

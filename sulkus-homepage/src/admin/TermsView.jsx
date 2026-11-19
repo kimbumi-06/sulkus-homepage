@@ -36,7 +36,7 @@ function TermsView({ games, terms, sheet }) {
         </div>
         <label className="games__toggle">
           <input type="checkbox" checked={onlyMissing} onChange={(e) => setOnlyMissing(e.target.checked)} />
-          번역·설명 빠진 것만
+          한글·설명 빠진 것만
         </label>
         {sheet && (
           <a
@@ -50,7 +50,7 @@ function TermsView({ games, terms, sheet }) {
         )}
       </div>
 
-      <p className="games__hint">우선순위: 운영진(시트의 노란 열) → 기본 사전 → AI 번역</p>
+      <p className="games__hint">우선순위: 운영진(사전 시트의 노란 열) → 기본 사전 → 영문</p>
 
       <table className="dict__table">
         <thead>
