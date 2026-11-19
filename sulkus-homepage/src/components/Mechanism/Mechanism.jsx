@@ -1,5 +1,6 @@
 import './Mechanism.css';
 import mechanicInfo from '../../data/mechanicInfo';
+import { useTermDesc } from '../../data/termDescs';
 
 /**
  * 메커니즘 동그라미 아이콘(선 아이콘). 마우스를 올리면 이름 + 설명 말풍선이 뜬다.
@@ -8,6 +9,7 @@ import mechanicInfo from '../../data/mechanicInfo';
 function Mechanism({ name, className = '' }) {
   const info = mechanicInfo[name];
   const Icon = info?.icon;
+  const desc = useTermDesc('mechanics', name);
 
   return (
     <span className={`mechanic ${className}`}>
@@ -16,7 +18,7 @@ function Mechanism({ name, className = '' }) {
       </span>
       <span className="mechanic__tip" role="tooltip">
         <strong>{name}</strong>
-        {info?.desc && <span>{info.desc}</span>}
+        {desc && <span>{desc}</span>}
       </span>
     </span>
   );

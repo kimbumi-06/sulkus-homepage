@@ -97,7 +97,8 @@ function AdminPage() {
   const { status, user, signIn, signOut } = useAdminAuth();
 
   if (!isFirebaseConfigured) {
-    return <div className="admin admin--center">Firebase 설정이 없습니다. (.env.local)</div>;
+    // 개발 중에만 안내 (배포된 사이트에서는 빈 화면)
+    return <div className="admin admin--center">{import.meta.env.DEV && "Firebase 설정이 없습니다. (.env.local)"}</div>;
   }
 
   if (status === 'loading') return <div className="admin admin--center" />;

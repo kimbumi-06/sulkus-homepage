@@ -5,6 +5,20 @@ import * as images from '../../assets/images';
 import { formatRange } from '../../utils/format';
 import { X, ExternalLink } from 'lucide-react';
 import mechanicInfo from '../../data/mechanicInfo';
+import { useTermDesc } from '../../data/termDescs';
+
+// 장르/메커니즘 칩: 마우스를 올리면 칩 목록 아래에 설명
+function TermChip({ type, name, className = '' }) {
+  const desc = useTermDesc(type, name);
+  const Icon = type === 'mechanics' ? mechanicInfo[name]?.icon : null;
+  return (
+    <span className={`modal__mech ${className}`}>
+      {Icon && <Icon className="modal__mech-icon" size={14} strokeWidth={1.75} />}
+      {name}
+      {desc && <span className="modal__mech-desc">{desc}</span>}
+    </span>
+  );
+}
 
 function GameModal({ game, onClose }) {
   // Esc로 닫기 + 모달 떠 있는 동안 뒤 페이지 스크롤 막기
@@ -25,10 +39,11 @@ function GameModal({ game, onClose }) {
   const {
     id, name_ko, name_en, rating, rank, weight,
     min_players, max_players, min_time, max_time,
-    mechanics_ko = [], categories_ko = [], description, image,
+    mechanics_ko = [], categories_ko = [], description, description_ko, image,
   } = game;
 
-  const paragraphs = (description || '')
+  // 한글 설명이 있으면 한글, 없으면 영문 원문
+  const paragraphs = (description_ko || description || '')
     .split('\n')
     .map((p) => p.trim())
     .filter(Boolean);
@@ -85,8 +100,10 @@ function GameModal({ game, onClose }) {
             {categories_ko.length > 0 && (
               <section>
                 <h3>장르</h3>
-                <div className="modal__chips">
-                  {categories_ko.map((c) => <span key={c}>{c}</span>)}
+                <div className="modal__chips modal__chips--genre">
+                  {categories_ko.map((c) => (
+                    <TermChip key={c} type="categories" name={c} className="modal__genre" />
+                  ))}
                 </div>
               </section>
             )}
@@ -95,18 +112,9 @@ function GameModal({ game, onClose }) {
               <section>
                 <h3>메커니즘</h3>
                 <div className="modal__chips modal__chips--mechanic">
-                  {mechanics_ko.map((m) => {
-                    const Icon = mechanicInfo[m]?.icon;
-                    return (
-                    <span key={m} className="modal__mech">
-                      {Icon && <Icon className="modal__mech-icon" size={14} strokeWidth={1.75} />}
-                      {m}
-                      {mechanicInfo[m]?.desc && (
-                        <span className="modal__mech-desc">{mechanicInfo[m].desc}</span>
-                      )}
-                    </span>
-                    );
-                  })}
+                  {mechanics_ko.map((m) => (
+                    <TermChip key={m} type="mechanics" name={m} />
+                  ))}
                 </div>
               </section>
             )}

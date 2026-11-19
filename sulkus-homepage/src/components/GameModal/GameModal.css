@@ -167,8 +167,15 @@
   background-color: var(--color-primary);
   font-size: 0.8rem;
 }
-.modal__chips--mechanic {
+.modal__chips--mechanic,
+.modal__chips--genre {
   position: relative; /* 설명 말풍선 기준 */
+}
+.modal__chips--genre .modal__genre {
+  display: inline-flex;
+  align-items: center;
+  background-color: var(--color-primary);
+  cursor: default;
 }
 .modal__chips--mechanic .modal__mech {
   display: inline-flex;

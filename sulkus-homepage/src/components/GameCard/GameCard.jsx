@@ -11,7 +11,7 @@ function GameCard({ game, onOpen }) {
   const {
     name_ko, name_en, rating, rank,
     min_players, max_players, min_time, max_time,
-    mechanics_ko = [], categories_ko = [], description, image,
+    mechanics_ko = [], categories_ko = [], description, description_ko, image,
   } = game;
 
   const mechanicList = mechanics_ko.slice(0, MAX_MECHANICS);
@@ -80,7 +80,7 @@ function GameCard({ game, onOpen }) {
         </div>
         <div className="card__desc">
           <FadeScroll className="card__desctext_box">
-            <p className="description-text">{firstParagraph(description)}</p>
+            <p className="description-text">{firstParagraph(description_ko || description)}</p>
           </FadeScroll>
         </div>
       </footer>
