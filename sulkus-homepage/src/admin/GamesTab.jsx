@@ -81,7 +81,7 @@ function GameEditor({ game, edit, onSaved }) {
         {message && <span className="games__message">{message}</span>}
       </div>
       <p className="games__hint">
-        빈칸은 자동 번역(AI)을 씁니다. 저장한 내용은 다음 &quot;사이트에 반영&quot; 때 적용돼요.
+        빈칸은 자동 번역(AI)을 씁니다. 저장하면 몇 초 뒤 사이트에 반영돼요.
       </p>
 
       <details className="games__original">

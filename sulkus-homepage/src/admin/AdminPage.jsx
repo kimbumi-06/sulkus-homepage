@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { LogIn, LogOut } from 'lucide-react';
 import './AdminPage.css';
 import { isFirebaseConfigured } from './firebase';
@@ -6,6 +6,8 @@ import { useAdminAuth } from './useAdminAuth';
 import { usePublishedData } from './usePublishedData';
 import GamesTab from './GamesTab';
 import DictionaryTab from './DictionaryTab';
+import SyncPanel from './SyncPanel';
+import { callPublish } from './api';
 
 // 검색엔진에 노출되지 않도록 (robots.txt에 경로를 적으면 오히려 주소가 드러나서 meta로만 처리)
 function useNoIndex() {
@@ -28,12 +30,44 @@ const TABS = [
   { id: 'terms', label: '장르·메커니즘 사전' },
 ];
 
+const PUBLISH_DELAY_MS = 3000;
+
+// 수정할 때마다 바로 반영하지 않고, 마지막 수정 3초 뒤 한 번만 반영
+function useAutoPublish(onPublished) {
+  const [state, setState] = useState('');
+  const [error, setError] = useState('');
+  const timer = useRef(null);
+
+  useEffect(() => () => clearTimeout(timer.current), []);
+
+  const request = useCallback(() => {
+    clearTimeout(timer.current);
+    setState('waiting');
+    timer.current = setTimeout(async () => {
+      setState('publishing');
+      try {
+        await callPublish();
+        setState('done');
+        onPublished?.();
+      } catch (e) {
+        setError(e.message);
+        setState('error');
+      }
+    }, PUBLISH_DELAY_MS);
+  }, [onPublished]);
+
+  return { state, error, request };
+}
+
 function AdminContent() {
   const [tab, setTab] = useState('games');
   const data = usePublishedData();
+  const publish = useAutoPublish(data.reload);
 
   return (
     <>
+      <SyncPanel publishState={publish.state} publishError={publish.error} onSynced={data.reload} />
+
       <nav className="admin__tabs">
         {TABS.map((t) => (
           <button
@@ -52,8 +86,8 @@ function AdminContent() {
         </span>
       </nav>
 
-      {tab === 'games' && <GamesTab games={data.games} />}
-      {tab === 'terms' && <DictionaryTab games={data.games} terms={data.terms} />}
+      {tab === 'games' && <GamesTab games={data.games} onSaved={publish.request} />}
+      {tab === 'terms' && <DictionaryTab games={data.games} terms={data.terms} onSaved={publish.request} />}
     </>
   );
 }

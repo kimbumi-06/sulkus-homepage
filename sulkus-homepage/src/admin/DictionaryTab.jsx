@@ -20,7 +20,7 @@ function effectiveTerm(en, stored, published) {
   return { ko: '', desc: '', source: 'none' };
 }
 
-function TermRow({ type, term, stored }) {
+function TermRow({ type, term, stored, onSaved }) {
   const current = effectiveTerm(term.en, stored, term.published);
   const [ko, setKo] = useState(current.ko || '');
   const [desc, setDesc] = useState(current.desc || '');
@@ -41,6 +41,7 @@ function TermRow({ type, term, stored }) {
         updatedAt: serverTimestamp(),
       });
       setState('saved');
+      onSaved?.();
     } catch {
       setState('error');
     }
@@ -52,6 +53,7 @@ function TermRow({ type, term, stored }) {
     try {
       await deleteDoc(doc(db, 'terms', termDocId(type, term.en)));
       setState('');
+      onSaved?.();
     } catch {
       setState('error');
     }
@@ -99,7 +101,7 @@ function TermRow({ type, term, stored }) {
   );
 }
 
-function DictionaryTab({ games, terms }) {
+function DictionaryTab({ games, terms, onSaved }) {
   const [type, setType] = useState('mechanics');
   const [stored, setStored] = useState({});
   const [loaded, setLoaded] = useState(false);
@@ -160,7 +162,7 @@ function DictionaryTab({ games, terms }) {
       </div>
 
       <p className="games__hint">
-        우선순위: 운영진 수정 → 기본 사전 → AI 번역. 저장한 내용은 다음 &quot;사이트에 반영&quot; 때 적용돼요.
+        우선순위: 운영진 수정 → 기본 사전 → AI 번역. 저장하면 몇 초 뒤 사이트에 반영돼요.
       </p>
 
       <table className="dict__table">
@@ -179,7 +181,7 @@ function DictionaryTab({ games, terms }) {
             const s = stored[id];
             // 저장된 값이 바뀌면 입력칸도 새로 맞춤
             const key = `${id}-${loaded}-${s?.source || ''}-${s?.ko || ''}-${s?.desc || ''}`;
-            return <TermRow key={key} type={type} term={t} stored={s} />;
+            return <TermRow key={key} type={type} term={t} stored={s} onSaved={onSaved} />;
           })}
         </tbody>
       </table>

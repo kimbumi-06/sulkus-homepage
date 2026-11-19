@@ -421,3 +421,62 @@
     grid-column: 1 / -1;
   }
 }
+
+/* ---------- 동기화 패널 ---------- */
+.sync {
+  margin-bottom: 20px;
+  padding: 14px 18px;
+  border: 1px solid rgba(255, 213, 79, 0.3);
+  border-radius: 18px;
+}
+
+.sync__row {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.sync__publish {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.8rem;
+  opacity: 0.8;
+}
+
+.sync__status p {
+  margin: 10px 0 0;
+  font-size: 0.82rem;
+  opacity: 0.85;
+}
+.sync__status--error p,
+.sync__error {
+  color: var(--color-primary);
+  opacity: 1;
+}
+.sync__error {
+  margin: 10px 0 0;
+  font-size: 0.82rem;
+}
+
+.sync__bar {
+  height: 6px;
+  margin-top: 12px;
+  border-radius: 999px;
+  background-color: rgba(255, 247, 225, 0.15);
+  overflow: hidden;
+}
+.sync__bar span {
+  display: block;
+  height: 100%;
+  background-color: var(--color-primary);
+  transition: width 0.4s;
+}
+
+.sync__spin {
+  animation: sync-spin 1s linear infinite;
+}
+@keyframes sync-spin {
+  to { transform: rotate(360deg); }
+}
