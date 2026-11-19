@@ -1,11 +1,11 @@
-import './MechanicIcon.css';
+import './Mechanism.css';
 import mechanicInfo from '../../data/mechanicInfo';
 
 /**
  * 메커니즘 동그라미 아이콘(선 아이콘). 마우스를 올리면 이름 + 설명 말풍선이 뜬다.
  * 말풍선은 가장 가까운 position: relative 조상 기준으로 위에 표시된다.
  */
-function MechanicIcon({ name, className = '' }) {
+function Mechanism({ name, className = '' }) {
   const info = mechanicInfo[name];
   const Icon = info?.icon;
 
@@ -22,4 +22,4 @@ function MechanicIcon({ name, className = '' }) {
   );
 }
 
-export default MechanicIcon;
+export default Mechanism;
