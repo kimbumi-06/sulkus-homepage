@@ -115,3 +115,52 @@ test('BGG XML 파싱 (XmlService)', () => {
   assert.equal(parsed.image, 'i.jpg');
   assert.equal(cleanDescription_(''), '');
 });
+
+test('번역 대상 고르기', () => {
+  const { termsToTranslate_, namesToTranslate_, descriptionsToTranslate_, glossaryFromTerms_, descSystem_, claudeJson_, claudeText_ } = gs;
+  const termRows = [
+    termRow({ type: '메커니즘', en: 'Trading', koBase: '거래', descBase: '자원을 주고받음' }), // 다 있음
+    termRow({ type: '장르', en: 'Economic', koBase: '경제' }), // 설명 없음 → 대상
+    termRow({ type: '장르', en: 'New', koEdit: '새것', descEdit: '설명' }), // 운영진
+    termRow({ type: '메커니즘', en: 'Unknown' }), // 아무것도 없음 → 대상
+  ];
+  assert.deepEqual([...termsToTranslate_(termRows)].map((t) => [t.row, t.en]), [[3, 'Economic'], [5, 'Unknown']]);
+
+  const gameRows = [
+    gameRow({ id: '1', nameEn: 'A', nameKoAuto: '에이', descEn: 'x', descKoAuto: '엑스', descHash: hashText_('x') }),
+    gameRow({ id: '2', nameEn: 'B', descEn: 'y', descKoAuto: '옛', descHash: 'old' }), // 이름 없음, 설명 바뀜
+    gameRow({ id: '3', nameEn: 'C', nameKoEdit: '씨', descEn: 'z', descKoEdit: '운영진' }), // 운영진
+    gameRow({ id: '4', nameEn: 'D', descEn: '' }), // 설명 없음
+  ];
+  assert.deepEqual([...namesToTranslate_(gameRows)].map((g) => g.id), ['2', '4']);
+  assert.deepEqual([...descriptionsToTranslate_(gameRows)].map((d) => d.row), [3]);
+
+  const glossary = [...glossaryFromTerms_(termRows, builtin)].map((g) => `${g.en}=${g.ko}`);
+  assert.ok(glossary.includes('Trading=거래') && glossary.includes('New=새것'));
+  const [sys] = descSystem_([{ en: 'Trading', ko: '거래' }, { en: 'X', ko: 'X' }]);
+  assert.match(sys.text, /Trading = 거래/);
+  assert.doesNotMatch(sys.text, /X = X/);
+  assert.equal(sys.cache_control.type, 'ephemeral');
+
+  // 응답 해석: 거절/잘림은 null, JSON 깨지면 null
+  assert.equal(claudeText_({ stop_reason: 'refusal', content: [] }), null);
+  assert.equal(claudeText_({ stop_reason: 'max_tokens', content: [{ type: 'text', text: 'a' }] }), null);
+  assert.equal(claudeText_({ stop_reason: 'end_turn', content: [{ type: 'thinking', thinking: '' }, { type: 'text', text: ' 번역 ' }] }), '번역');
+  assert.equal(claudeJson_({ stop_reason: 'end_turn', content: [{ type: 'text', text: '{bad' }] }), null);
+  assert.equal(claudeJson_({ stop_reason: 'end_turn', content: [{ type: 'text', text: '{"items":[]}' }] }).items.length, 0);
+});
+
+test('번역 실패 표시(-)는 빈칸 취급 + 다음 동기화 때 지움', () => {
+  const out = buildPublished_(
+    [raw[1]],
+    [gameRow({ id: '2', nameKoAuto: '-' })],
+    [termRow({ type: '메커니즘', en: 'Brand New Mechanic', koAi: '-', descAi: '-' })],
+    builtin
+  );
+  assert.equal(out.games[0].name_ko, '');
+  assert.equal(out.games[0].mechanics_ko[0], 'Brand New Mechanic');
+  const merged = mergeGameRows_([raw[1]], [gameRow({ id: '2', nameKoAuto: '-' })]);
+  assert.equal(merged[0][G.nameKoAuto - 1], '');
+  const terms = mergeTermRows_([raw[1]], [termRow({ type: '메커니즘', en: 'Brand New Mechanic', koAi: '-', descAi: '-' })], builtin);
+  assert.equal(terms[0][T.koAi - 1], '');
+});

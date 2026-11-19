@@ -13,6 +13,10 @@ function hashText_(text) {
 
 const termKey_ = (type, en) => `${type}~${en}`;
 
+// 번역 실패 표시('-')는 빈칸으로 취급
+const FAILED_MARK = '-';
+const val_ = (v) => (v === FAILED_MARK ? '' : v || '');
+
 /** 사전 시트 행 → Map(termKey → {koEdit, descEdit, koBase, descBase, koAi, descAi}) */
 function termsFromRows_(rows) {
   const map = new Map();
@@ -23,7 +27,7 @@ function termsFromRows_(rows) {
     map.set(termKey_(type, en), {
       koEdit: r[T.koEdit - 1], descEdit: r[T.descEdit - 1],
       koBase: r[T.koBase - 1], descBase: r[T.descBase - 1],
-      koAi: r[T.koAi - 1], descAi: r[T.descAi - 1],
+      koAi: val_(r[T.koAi - 1]), descAi: val_(r[T.descAi - 1]),
     });
   });
   return map;
@@ -51,7 +55,7 @@ function gamesFromRows_(rows) {
 
 function resolveName_(raw, row) {
   const edit = row ? row[G.nameKoEdit - 1] : '';
-  const auto = row ? row[G.nameKoAuto - 1] : '';
+  const auto = row ? val_(row[G.nameKoAuto - 1]) : '';
   if (edit) return { text: edit, source: 'admin' };
   if (auto) return { text: auto, source: auto === raw.name_ko_bgg ? 'bgg' : 'ai' };
   if (raw.name_ko_bgg) return { text: raw.name_ko_bgg, source: 'bgg' };
@@ -115,7 +119,7 @@ function mergeGameRows_(raw, oldRows) {
     return [
       g.id, g.name_en,
       keep(G.nameKoEdit), keep(G.descKoEdit),
-      keep(G.nameKoAuto) || g.name_ko_bgg || '', keep(G.descKoAuto),
+      val_(keep(G.nameKoAuto)) || g.name_ko_bgg || '', keep(G.descKoAuto),
       g.description, keep(G.descHash),
     ];
   });
@@ -140,7 +144,7 @@ function mergeTermRows_(raw, oldRows, builtin) {
       TERM_TYPE_LABEL[type], en,
       r ? r[T.koEdit - 1] : '', r ? r[T.descEdit - 1] : '',
       koBase, koBase ? builtin.descByKo[koBase] || '' : '',
-      r ? r[T.koAi - 1] : '', r ? r[T.descAi - 1] : '',
+      r ? val_(r[T.koAi - 1]) : '', r ? val_(r[T.descAi - 1]) : '',
       counts.get(termKey_(type, en)) || 0,
     ]);
   };
