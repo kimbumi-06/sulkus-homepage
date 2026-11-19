@@ -1,6 +1,6 @@
 /* 한 줄 헤더: [로고] [검색창] [필터] ........ [정렬] */
 .toolbar {
-  padding: 16px 20px 0;
+  padding: 17px 30px 0;
 }
 
 .toolbar__row {
@@ -197,7 +197,7 @@
 /* ---------- 메커니즘 검색 선택창 ---------- */
 .mselect {
   position: relative;
-  max-width: 520px;
+  max-width: 395px;
 }
 
 .mselect__box {
