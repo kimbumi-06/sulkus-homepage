@@ -1,0 +1,102 @@
+.admin {
+  min-height: 100vh;
+  padding: 20px 24px 60px;
+  background-color: var(--color-bg);
+  color: var(--color-card);
+}
+
+.admin--center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.admin__header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 20px;
+}
+
+.admin__header h1 {
+  margin: 0;
+  color: var(--color-primary);
+  font-size: 1.3rem;
+}
+
+.admin__user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 0.85rem;
+  opacity: 0.85;
+}
+
+/* ---------- 공통 버튼 ---------- */
+.admin__btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 36px;
+  padding: 0 16px;
+  border: 1px solid var(--color-primary);
+  border-radius: 999px;
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: opacity 0.15s, background-color 0.15s;
+}
+.admin__btn:hover {
+  opacity: 0.9;
+}
+.admin__btn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+.admin__btn--ghost {
+  background-color: transparent;
+  color: var(--color-primary);
+  font-weight: normal;
+}
+.admin__btn--ghost:hover {
+  background-color: rgba(255, 213, 79, 0.12);
+  opacity: 1;
+}
+
+.admin__btn--small {
+  height: 30px;
+  padding: 0 12px;
+  font-size: 0.8rem;
+}
+
+/* ---------- 공통 입력창 (사이트 입력창과 같은 톤) ---------- */
+.admin__input,
+.admin__textarea {
+  width: 100%;
+  padding: 8px 12px;
+  border: 1px solid rgba(255, 213, 79, 0.45);
+  border-radius: 12px;
+  outline: none;
+  background-color: transparent;
+  color: var(--color-card);
+  font-size: 0.9rem;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+.admin__input:focus,
+.admin__textarea:focus {
+  background-color: rgba(255, 213, 79, 0.18);
+  border-color: var(--color-primary);
+}
+.admin__input::placeholder,
+.admin__textarea::placeholder {
+  color: rgba(255, 247, 225, 0.45);
+}
+.admin__textarea {
+  min-height: 160px;
+  resize: vertical;
+  line-height: 1.5;
+}
