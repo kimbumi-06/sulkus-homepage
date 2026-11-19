@@ -1,9 +1,10 @@
 // 웹 앱 (배포 → 웹 앱, 실행: 나, 액세스: 모든 사용자)
-//   GET  ?action=games          사이트용 게임 JSON (누구나)
-//   POST {action, idToken}      운영진 페이지용 (Google 로그인 토큰 확인 + 시트 편집자만)
-//        action: whoami | status | sync | publish
-// 스크립트 속성: GOOGLE_CLIENT_ID (운영진 페이지 로그인용 OAuth 클라이언트 ID)
-//               ADMIN_EMAILS (선택, 쉼표 구분: 시트 편집자 말고 추가로 허용할 이메일)
+//   GET  ?action=games     사이트용 게임 JSON
+//   POST {action}          운영진 페이지용: info | status | sync | publish
+// 수정은 스프레드시트(편집자만)에서 하므로 여기엔 로그인이 없음.
+// 대신 동기화는 10분에 한 번만 시작할 수 있게 막아둠 (번역은 안 된 것만 하므로 반복해도 AI 비용은 거의 없음)
+
+const SYNC_COOLDOWN_MS = 10 * 60 * 1000;
 
 function doGet(e) {
   const action = (e && e.parameter && e.parameter.action) || 'games';
@@ -16,15 +17,21 @@ function doGet(e) {
 function doPost(e) {
   try {
     const body = JSON.parse((e && e.postData && e.postData.contents) || '{}');
-    const email = verifyAdmin_(body.idToken);
     switch (body.action) {
-      case 'whoami':
-        return json_(Object.assign({ ok: true, email }, sheetInfo_()));
+      case 'info':
+        return json_(Object.assign({ ok: true }, sheetInfo_()));
       case 'status':
         return json_(Object.assign({ ok: true }, getStatus_()));
-      case 'sync':
+      case 'sync': {
+        const job = loadJob_();
+        const last = job && (job.finishedAt || job.startedAt);
+        if (!isRunning_(job) && last && Date.now() - last < SYNC_COOLDOWN_MS) {
+          const min = Math.ceil((SYNC_COOLDOWN_MS - (Date.now() - last)) / 60000);
+          throw new Error(`동기화는 10분에 한 번만 할 수 있어요. ${min}분 뒤에 다시 시도하세요.`);
+        }
         // 요청은 25초만 일하고 바로 응답, 나머지는 시간 트리거가 이어서 진행
-        return json_(Object.assign({ ok: true }, startSync_(email, 25 * 1000)));
+        return json_(Object.assign({ ok: true }, startSync_('운영진 페이지', 25 * 1000)));
+      }
       case 'publish': {
         const lock = LockService.getScriptLock();
         if (!lock.tryLock(20000)) throw new Error('다른 작업이 진행 중이에요. 잠시 뒤 다시 시도하세요.');
@@ -47,7 +54,10 @@ function json_(obj) {
   return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
 }
 
-/** 시트 바로가기 정보 (운영진 페이지의 "시트에서 수정" 링크용) */
+/**
+ * 시트 바로가기 정보 (운영진 페이지의 "시트에서 수정" 링크용)
+ * 시트 자체는 편집자로 공유된 사람만 열 수 있음
+ */
 function sheetInfo_() {
   const ss = ss_();
   const games = sheet_(SHEET.games);
@@ -59,47 +69,4 @@ function sheetInfo_() {
     gids: { games: games ? games.getSheetId() : null, terms: terms ? terms.getSheetId() : null },
     rows,
   };
-}
-
-// ---------- 운영진 확인 ----------
-
-/** 운영진 = 이 스프레드시트의 소유자·편집자 (+ ADMIN_EMAILS) */
-function adminEmails_() {
-  const ss = ss_();
-  const emails = new Set();
-  try {
-    ss.getEditors().forEach((u) => emails.add(u.getEmail().toLowerCase()));
-    const owner = ss.getOwner();
-    if (owner) emails.add(owner.getEmail().toLowerCase());
-  } catch (e) {
-    console.warn('편집자 목록을 못 읽음', e);
-  }
-  const extra = PropertiesService.getScriptProperties().getProperty('ADMIN_EMAILS') || '';
-  extra.split(',').map((s) => s.trim().toLowerCase()).filter(Boolean).forEach((m) => emails.add(m));
-  return emails;
-}
-
-/** Google ID 토큰 확인 → 운영진이면 이메일, 아니면 오류 */
-function verifyAdmin_(idToken) {
-  if (!idToken) throw new Error('로그인이 필요해요.');
-  const cache = CacheService.getScriptCache();
-  const cacheKey = `tok:${hashText_(idToken)}`;
-  const cached = cache.get(cacheKey);
-  if (cached) return cached;
-
-  const res = UrlFetchApp.fetch(
-    `https://oauth2.googleapis.com/tokeninfo?id_token=${encodeURIComponent(idToken)}`,
-    { muteHttpExceptions: true }
-  );
-  if (res.getResponseCode() !== 200) throw new Error('로그인이 만료됐어요. 다시 로그인하세요.');
-  const info = JSON.parse(res.getContentText());
-  const clientId = PropertiesService.getScriptProperties().getProperty('GOOGLE_CLIENT_ID');
-  if (!clientId || info.aud !== clientId) throw new Error('로그인 설정이 맞지 않아요. (GOOGLE_CLIENT_ID)');
-  if (String(info.email_verified) !== 'true') throw new Error('이메일 인증이 안 된 계정이에요.');
-  if (Number(info.exp) * 1000 < Date.now()) throw new Error('로그인이 만료됐어요. 다시 로그인하세요.');
-
-  const email = String(info.email).toLowerCase();
-  if (!adminEmails_().has(email)) throw new Error('권한이 없어요.');
-  cache.put(cacheKey, email, 600);
-  return email;
 }

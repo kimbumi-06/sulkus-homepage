@@ -16,29 +16,29 @@ const STEP_LABEL = {
 const formatTime = (v) => (v ? new Date(v).toLocaleString('ko-KR') : '');
 
 /** 동기화(BGG 가져오기 + 번역 + 반영) / 지금 반영 버튼 + 진행 상황 */
-function SyncPanel({ token, onError, onChanged }) {
+function SyncPanel({ onChanged }) {
   const [status, setStatus] = useState(null);
   const [busy, setBusy] = useState('');
   const [message, setMessage] = useState('');
 
   const refresh = useCallback(async () => {
     try {
-      setStatus(await callAdmin('status', token));
-    } catch (e) {
-      onError(e);
+      setStatus(await callAdmin('status'));
+    } catch {
+      // 상태 확인 실패는 다음 확인 때 다시
     }
-  }, [token, onError]);
+  }, []);
 
   // 처음 한 번 상태 불러오기
   useEffect(() => {
     let cancelled = false;
-    callAdmin('status', token)
+    callAdmin('status')
       .then((s) => !cancelled && setStatus(s))
-      .catch(onError);
+      .catch(() => {});
     return () => {
       cancelled = true;
     };
-  }, [token, onError]);
+  }, []);
 
   const running = status?.job?.state === 'running';
 
@@ -62,7 +62,7 @@ function SyncPanel({ token, onError, onChanged }) {
     setBusy(action);
     setMessage('');
     try {
-      const res = await callAdmin(action, token);
+      const res = await callAdmin(action);
       setStatus(res);
       if (action === 'publish') {
         setMessage(`게임 ${res.count}개를 사이트에 반영했어요.`);
@@ -72,7 +72,6 @@ function SyncPanel({ token, onError, onChanged }) {
       if (action === 'sync' && res.job?.state === 'done') onChanged?.();
     } catch (e) {
       setMessage(e.message);
-      onError(e);
     } finally {
       setBusy('');
     }

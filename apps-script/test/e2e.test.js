@@ -31,11 +31,6 @@ function makeEnv({ descText = 'Build &amp;amp; trade.' } = {}) {
   };
   const f = createFakes({
     editors: ['owner@club.kr', 'staff@club.kr'],
-    tokens: {
-      good: { aud: 'CLIENT', email: 'staff@club.kr', email_verified: 'true', exp: String(Date.now() / 1000 + 3600) },
-      stranger: { aud: 'CLIENT', email: 'who@else.kr', email_verified: 'true', exp: String(Date.now() / 1000 + 3600) },
-      otherApp: { aud: 'OTHER', email: 'staff@club.kr', email_verified: 'true', exp: String(Date.now() / 1000 + 3600) },
-    },
     bgg: (url) => {
       if (url.includes('/collection?')) return f.response(200, COLLECTION);
       const ids = decodeURIComponent(url.match(/id=([^&]+)/)[1]).split(',');
@@ -59,7 +54,6 @@ function makeEnv({ descText = 'Build &amp;amp; trade.' } = {}) {
   f.props.set('BGG_USERNAME', 'club');
   f.props.set('BGG_TOKEN', 'bggtok');
   f.props.set('ANTHROPIC_API_KEY', 'sk-test');
-  f.props.set('GOOGLE_CLIENT_ID', 'CLIENT');
   return { f, gs };
 }
 
@@ -173,33 +167,38 @@ test('BGG 영문 설명이 바뀌면 그 게임만 다시 번역', () => {
   assert.ok(before > 0);
 });
 
-test('웹 앱: 게임 JSON은 누구나, 운영진 요청은 시트 편집자 토큰만', () => {
+test('웹 앱: 게임 JSON, 시트 정보, 상태, 반영 + 동기화 10분 제한', () => {
   const { f, gs } = makeEnv();
   gs.setup();
-  gs.startSync_('owner@club.kr', 60_000);
   f.detach();
-  f.cache.clear(); // 캐시 없을 때 시트에서 읽기
+  const post = (body) => JSON.parse(gs.doPost({ postData: { contents: JSON.stringify(body) } }).text);
 
+  const first = post({ action: 'sync' });
+  assert.equal(first.ok, true, first.error);
+  assert.equal(first.job.state, 'done');
+  // 방금 끝났으면 다시 시작 못 함
+  assert.match(post({ action: 'sync' }).error, /10분에 한 번/);
+
+  f.cache.clear(); // 캐시 없을 때 시트에서 읽기
   const get = JSON.parse(gs.doGet({ parameter: { action: 'games' } }).text);
   assert.equal(get.games.length, 3);
 
-  const post = (body) => JSON.parse(gs.doPost({ postData: { contents: JSON.stringify(body) } }).text);
-  const who = post({ action: 'whoami', idToken: 'good' });
-  assert.equal(who.ok, true, who.error);
-  assert.equal(who.email, 'staff@club.kr');
-  assert.equal(who.rows['2'], 3); // Brass 는 3번째 행
-  assert.match(who.sheetUrl, /SHEET123/);
+  const info = post({ action: 'info' });
+  assert.equal(info.ok, true, info.error);
+  assert.equal(info.rows['2'], 3); // Brass 는 3번째 행
+  assert.match(info.sheetUrl, /SHEET123/);
 
-  assert.match(post({ action: 'whoami', idToken: 'stranger' }).error, /권한/);
-  assert.match(post({ action: 'whoami', idToken: 'otherApp' }).error, /GOOGLE_CLIENT_ID/);
-  assert.match(post({ action: 'whoami', idToken: 'nope' }).error, /로그인/);
-  assert.match(post({ action: 'whoami' }).error, /로그인/);
-
-  const pub = post({ action: 'publish', idToken: 'good' });
+  const pub = post({ action: 'publish' });
   assert.equal(pub.ok, true, pub.error);
   assert.equal(pub.count, 3);
-  const st = post({ action: 'status', idToken: 'good' });
-  assert.equal(st.job.state, 'done');
+  assert.equal(post({ action: 'status' }).job.state, 'done');
+  assert.match(post({ action: 'nope' }).error, /알 수 없는/);
+
+  // 10분 지나면 다시 가능
+  const job = JSON.parse(f.props.get('SYNC_JOB'));
+  job.finishedAt -= 11 * 60 * 1000;
+  f.props.set('SYNC_JOB', JSON.stringify(job));
+  assert.equal(post({ action: 'sync' }).ok, true);
 });
 
 test('동기화 실패하면 오류 상태로 남고 다시 시작 가능', () => {

@@ -12,10 +12,9 @@
       - 게임·사전 시트를 고치면 그때 바로 반영 (주기적으로 돌지 않음)
       - 웹 앱: 사이트에 게임 JSON 제공 + 운영진 페이지 요청 처리
 
-운영진 페이지 /wlqqnwjsdyd  ← 확인 + 동기화 버튼
- - Google 로그인 (스프레드시트 편집자만 통과)
+운영진 페이지 /wlqqnwjsdyd  ← 확인 + 동기화 버튼 (로그인 없음)
  - 게임·사전이 지금 어떻게 보이는지, 번역 출처(운영진/기본 사전/BGG/AI) 확인
- - "BGG 동기화", "지금 반영" 버튼, 진행 상황
+ - "BGG 동기화"(10분에 한 번까지), "지금 반영" 버튼, 진행 상황
  - 각 항목에서 "스프레드시트에서 수정" 바로가기
 
 사이트 (방문자)
@@ -40,7 +39,7 @@
 ### 1. 스프레드시트 만들기
 
 1. 새 구글 스프레드시트 만들기 (이름 자유)
-2. **공유** → 운영진 Google 계정을 **편집자**로 추가. 편집자 = 운영진 페이지 접속 가능한 사람.
+2. **공유** → 운영진 Google 계정을 **편집자**로 추가. 수정은 편집자만 할 수 있음.
 
 ### 2. Apps Script 코드 넣기
 
@@ -66,9 +65,7 @@ Apps Script → 프로젝트 설정 → **스크립트 속성**에 추가:
 |---|---|
 | `BGG_USERNAME` | BGG 사용자 이름 |
 | `BGG_TOKEN` | BGG API 토큰 |
-| `ANTHROPIC_API_KEY` | Claude API 키 |
-| `GOOGLE_CLIENT_ID` | 5번에서 만든 OAuth 클라이언트 ID |
-| `ADMIN_EMAILS` | (선택) 편집자 말고 추가로 허용할 이메일, 쉼표 구분 |
+| `ANTHROPIC_API_KEY` | Claude API 키 (console.anthropic.com → Settings → API Keys) |
 
 > 시트 편집자는 Apps Script도 열 수 있어서 이 값들을 볼 수 있음. 편집자는 믿을 수 있는 운영진만.
 
@@ -77,15 +74,7 @@ Apps Script → 프로젝트 설정 → **스크립트 속성**에 추가:
 스프레드시트 새로고침 → 메뉴 **Sulkus → 처음 설정** → 권한 허용.
 게임·사전 시트, 숨은 시트, "시트를 고치면 반영" 트리거가 만들어짐.
 
-### 5. Google 로그인용 OAuth 클라이언트
-
-1. https://console.cloud.google.com → 프로젝트 만들기(아무 이름)
-2. **API 및 서비스 → OAuth 동의 화면**: 외부, 앱 이름 입력, 게시 상태 "프로덕션" (기본 프로필·이메일만 쓰므로 검수 필요 없음)
-3. **사용자 인증 정보 → OAuth 클라이언트 ID 만들기** → 웹 애플리케이션
-   - 승인된 JavaScript 원본: 사이트 주소(예: `https://sulkus.vercel.app`), 개발용 `http://localhost:5173`
-4. 나온 클라이언트 ID(`...apps.googleusercontent.com`)를 3번 `GOOGLE_CLIENT_ID` 와 6번 `VITE_GOOGLE_CLIENT_ID` 에 넣기
-
-### 6. 웹 앱 배포
+### 5. 웹 앱 배포
 
 Apps Script → **배포 → 새 배포** → 유형: 웹 앱
 - 실행: **나**
@@ -94,20 +83,19 @@ Apps Script → **배포 → 새 배포** → 유형: 웹 앱
 나온 웹 앱 URL(`https://script.google.com/macros/s/.../exec`)을 복사.
 코드를 고친 뒤엔 **배포 관리 → 수정 → 새 버전**으로 다시 배포 (URL 유지).
 
-### 7. 사이트 환경 변수
+### 6. 사이트 환경 변수
 
-`sulkus-homepage/.env.example` → `.env.local` 로 복사해서 채우기:
+`sulkus-homepage/.env.example` → `.env.local` 로 복사해서 5번의 웹 앱 URL 넣기:
 
 ```
 VITE_APPS_SCRIPT_URL=https://script.google.com/macros/s/.../exec
-VITE_GOOGLE_CLIENT_ID=....apps.googleusercontent.com
 ```
 
-Vercel/Netlify에도 같은 두 값을 환경 변수로 등록하고 다시 배포.
+Vercel/Netlify에도 같은 값을 환경 변수로 등록하고 다시 배포.
 - Vercel: 루트 `sulkus-homepage`, `vercel.json` 이 모든 주소를 index.html로
 - Netlify: 베이스 `sulkus-homepage`, 빌드 `npm run build`, 배포 폴더 `dist`, `public/_redirects`
 
-### 8. 첫 동기화
+### 7. 첫 동기화
 
 시트 메뉴 **Sulkus → BGG 동기화** 또는 운영진 페이지의 **BGG 동기화** 버튼.
 Apps Script는 한 번에 6분까지만 돌 수 있어서, 남은 일은 1분 뒤 자동으로 이어서 진행됨 (처음엔 총 5~15분).

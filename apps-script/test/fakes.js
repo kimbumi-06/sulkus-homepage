@@ -43,7 +43,7 @@ class FakeSheet {
   clearContents() { this.data.clear(); }
 }
 
-export function createFakes({ editors = ['owner@club.kr'], bgg, claude, tokens = {} } = {}) {
+export function createFakes({ editors = ['owner@club.kr'], bgg, claude } = {}) {
   const sheets = new Map();
   let nextId = 1;
   const spreadsheet = {
@@ -72,11 +72,6 @@ export function createFakes({ editors = ['owner@club.kr'], bgg, claude, tokens =
     if (url.startsWith('https://boardgamegeek.com/')) {
       log.bgg.push(url);
       return bgg(url);
-    }
-    if (url.startsWith('https://oauth2.googleapis.com/tokeninfo')) {
-      const tok = decodeURIComponent(url.split('id_token=')[1]);
-      const info = tokens[tok];
-      return info ? response(200, JSON.stringify(info)) : response(400, '{"error":"invalid_token"}');
     }
     if (url === 'https://api.anthropic.com/v1/messages') {
       const body = JSON.parse(opts.payload);
