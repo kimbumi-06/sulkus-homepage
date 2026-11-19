@@ -1,0 +1,13 @@
+{
+  "name": "sulkus-apps-script",
+  "private": true,
+  "type": "module",
+  "description": "Apps Script 코드의 로컬 테스트용 (Apps Script에는 .gs 와 appsscript.json 만 올림)",
+  "scripts": {
+    "test": "node --test test/*.test.js",
+    "dictionary": "node tools/build-dictionary.mjs"
+  },
+  "devDependencies": {
+    "@xmldom/xmldom": "^0.9.12"
+  }
+}
