@@ -115,7 +115,7 @@ export function createFakes({ editors = ['owner@club.kr'], bgg, claude, tokens =
     ScriptApp: {
       newTrigger: (fn) => {
         const t = { fn, getHandlerFunction: () => fn };
-        const b = { timeBased: () => b, after: () => b, everyMinutes: () => b, create: () => { triggers.push(t); return t; } };
+        const b = { timeBased: () => b, after: () => b, everyMinutes: () => b, forSpreadsheet: () => b, onEdit: () => b, create: () => { triggers.push(t); return t; } };
         return b;
       },
       getProjectTriggers: () => [...triggers],

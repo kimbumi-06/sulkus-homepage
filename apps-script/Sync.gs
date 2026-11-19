@@ -143,7 +143,7 @@ function stepMerge_(job) {
 }
 
 function stepPublish_(job) {
-  const count = publish_();
+  const count = publishPending_(); // 동기화 중에 들어온 시트 수정도 같이 반영
   return Object.assign(job, {
     state: 'done', step: 'done', done: count, total: count,
     message: `완료: 게임 ${count}개`, finishedAt: Date.now(),
@@ -167,6 +167,9 @@ function syncSteps_() {
 
 /** 시트 내용으로 사이트 JSON 다시 만들기. 게임 수를 돌려줌 */
 function publish_() {
+  const props = PropertiesService.getScriptProperties();
+  // 읽기 전에 표시를 지워야, 읽는 도중 들어온 수정이 다시 표시돼서 빠지지 않음
+  props.deleteProperty('DIRTY');
   const raw = readBggGames_();
   if (!raw.length) throw new Error('아직 BGG에서 가져온 적이 없어요. 먼저 동기화를 실행하세요.');
   const out = buildPublished_(
@@ -176,8 +179,16 @@ function publish_() {
     BUILTIN
   );
   writePublished_(JSON.stringify(out));
-  const props = PropertiesService.getScriptProperties();
   props.setProperty('PUBLISHED_AT', out.updatedAt);
-  props.deleteProperty('DIRTY');
   return out.games.length;
+}
+
+/** 반영하는 동안 시트가 또 바뀌었으면 한 번 더 (최대 3번) */
+function publishPending_() {
+  let count = 0;
+  for (let i = 0; i < 3; i++) {
+    count = publish_();
+    if (PropertiesService.getScriptProperties().getProperty('DIRTY') !== '1') break;
+  }
+  return count;
 }

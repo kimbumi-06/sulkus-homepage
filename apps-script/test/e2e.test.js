@@ -68,7 +68,8 @@ const published = (gs) => JSON.parse(gs.readPublished_());
 test('처음 설정 → 동기화 한 번에 끝까지', () => {
   const { f, gs } = makeEnv();
   gs.setup();
-  assert.ok(f.triggers.some((t) => t.fn === 'autoPublish'));
+  assert.ok(f.triggers.some((t) => t.fn === 'onSheetEdit'));
+  assert.ok(!f.triggers.some((t) => t.fn === 'autoPublish')); // 주기 트리거 없음
   assert.equal(f.props.get('SHEET_ID'), 'SHEET123');
 
   const status = gs.startSync_('owner@club.kr', 60_000);
@@ -123,7 +124,7 @@ test('시간이 모자라면 이어서 실행 (트리거)', () => {
   assert.equal(gs.startSync_('owner@club.kr', 60_000).job.state, 'done');
 });
 
-test('운영진 시트 수정 → 5분 자동 반영, 다음 동기화에도 유지', () => {
+test('운영진 시트 수정 → 바로 반영, 다음 동기화에도 유지', () => {
   const { f, gs } = makeEnv();
   gs.setup();
   gs.startSync_('owner@club.kr', 60_000);
@@ -135,10 +136,10 @@ test('운영진 시트 수정 → 5분 자동 반영, 다음 동기화에도 유
   games.set(3, 4, '운영진 설명');
   const tradingRow = [...Array(terms.getLastRow()).keys()].map((i) => i + 2).find((r) => terms.get(r, 2) === 'Trading');
   terms.set(tradingRow, 3, '교환');
-  gs.onEdit({ range: { getSheet: () => games } });
-  assert.equal(gs.getStatus_().pendingEdits, true);
-
-  gs.autoPublish();
+  const before = gs.getStatus_().publishedAt;
+  gs.onSheetEdit({ range: { getSheet: () => f.sheets.get('_bgg') } }); // 다른 시트 수정은 무시
+  assert.equal(gs.getStatus_().publishedAt, before);
+  gs.onSheetEdit({ range: { getSheet: () => games } });
   let out = published(gs);
   assert.equal(out.games[1].name_ko, '브라스');
   assert.equal(out.games[1]._src.desc, 'admin');
@@ -210,4 +211,19 @@ test('동기화 실패하면 오류 상태로 남고 다시 시작 가능', () =
   assert.match(status.job.error, /BGG_USERNAME/);
   f.props.set('BGG_USERNAME', 'club');
   assert.equal(gs.startSync_('owner@club.kr', 60_000).job.state, 'done');
+});
+
+test('동기화 중 시트를 고치면 동기화 끝날 때 같이 반영', () => {
+  const { f, gs } = makeEnv();
+  gs.setup();
+  gs.startSync_('owner@club.kr', 60_000);
+  // 두 번째 동기화를 시작만 해두고(실행 시간 0) 그 사이에 수정
+  gs.startSync_('owner@club.kr', -1);
+  const games = f.sheets.get('게임');
+  games.set(2, 3, '카탄 (운영진)');
+  gs.onSheetEdit({ range: { getSheet: () => games } });
+  assert.equal(gs.getStatus_().pendingEdits, true); // 동기화 중이라 바로 반영 안 함
+  for (let i = 0; i < 10 && gs.getStatus_().job.state === 'running'; i++) gs.continueSync();
+  assert.equal(published(gs).games[0].name_ko, '카탄 (운영진)');
+  assert.equal(gs.getStatus_().pendingEdits, false);
 });

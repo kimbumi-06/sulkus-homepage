@@ -99,7 +99,7 @@ function SyncPanel({ token, onError, onChanged }) {
         </button>
         <span className="sync__publish">
           {status?.pendingEdits
-            ? '반영 안 된 시트 수정이 있어요 (5분 안에 자동 반영)'
+            ? '반영 안 된 시트 수정이 있어요 (동기화가 끝나면 같이 반영)'
             : `마지막 반영: ${formatTime(status?.publishedAt) || '없음'}`}
         </span>
       </div>

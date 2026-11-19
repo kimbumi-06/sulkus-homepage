@@ -29,7 +29,7 @@ function doPost(e) {
         const lock = LockService.getScriptLock();
         if (!lock.tryLock(20000)) throw new Error('다른 작업이 진행 중이에요. 잠시 뒤 다시 시도하세요.');
         try {
-          const count = publish_();
+          const count = publishPending_();
           return json_(Object.assign({ ok: true, count }, getStatus_()));
         } finally {
           lock.releaseLock();
