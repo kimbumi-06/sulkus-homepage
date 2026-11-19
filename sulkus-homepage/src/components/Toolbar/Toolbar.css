@@ -197,7 +197,7 @@
 /* ---------- 메커니즘 검색 선택창 ---------- */
 .mselect {
   position: relative;
-  max-width: 395px;
+  max-width: 500px;
 }
 
 .mselect__box {

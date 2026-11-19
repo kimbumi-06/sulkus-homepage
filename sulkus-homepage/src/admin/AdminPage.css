@@ -480,3 +480,36 @@
 @keyframes sync-spin {
   to { transform: rotate(360deg); }
 }
+
+/* ---------- 확인용 화면 ---------- */
+.games__value {
+  margin: 0;
+  padding: 10px 12px;
+  border: 1px solid rgba(255, 213, 79, 0.25);
+  border-radius: 12px;
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
+.games__value--long {
+  white-space: pre-line;
+  max-height: 320px;
+  overflow-y: auto;
+}
+.games__field > span {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.games__sheet {
+  align-self: flex-start;
+  text-decoration: none;
+}
+.admin__user a {
+  text-decoration: none;
+}
+.dict__desc {
+  opacity: 0.85;
+}
+.dict__badge--bgg {
+  border-style: dashed;
+}

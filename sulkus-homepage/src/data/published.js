@@ -2,13 +2,11 @@
 // 아직 한 번도 반영하지 않았거나 불러오기에 실패하면, 저장소에 들어 있는 games.ko.json을 쓴다.
 import bundledGames from './games.ko.json';
 
-const bucket = import.meta.env.VITE_FIREBASE_STORAGE_BUCKET;
+// Apps Script 웹 앱 주소 (VITE_APPS_SCRIPT_URL) 의 ?action=games, 또는 따로 지정한 VITE_GAMES_URL
+const appsScript = import.meta.env.VITE_APPS_SCRIPT_URL;
 
 export const PUBLISHED_URL =
-  import.meta.env.VITE_GAMES_URL ||
-  (bucket
-    ? `https://firebasestorage.googleapis.com/v0/b/${bucket}/o/public%2Fgames.json?alt=media`
-    : null);
+  import.meta.env.VITE_GAMES_URL || (appsScript ? `${appsScript}?action=games` : null);
 
 /**
  * 반영된 JSON은 { updatedAt, games: [...], terms: { mechanics: {...}, categories: {...} } } 형태.
