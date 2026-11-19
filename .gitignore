@@ -24,10 +24,3 @@ dist-ssr
 *.sw?
 *.env
 
-
-# Firebase
-firebase/.firebaserc
-firebase/.firebase
-firebase/functions/node_modules
-firebase-debug.log*
-firebase/functions/.env
