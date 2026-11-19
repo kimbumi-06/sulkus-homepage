@@ -41,19 +41,15 @@
 
 ### 2. Apps Script 코드 넣기
 
-방법 A — 복사·붙여넣기
-1. 스프레드시트 → **확장 프로그램 → Apps Script**
-2. `apps-script/` 의 `.gs` 파일들(Bgg, Build, Dictionary, Menu, Sheets, Sync, Translate, Web)을 같은 이름으로 만들고 내용 붙여넣기
-3. 프로젝트 설정(톱니바퀴) → "appsscript.json 매니페스트 파일 표시" 켜기 → `appsscript.json` 내용 붙여넣기
+복사·붙여넣기로 넣음 (따로 설치하거나 Google Cloud를 쓸 필요 없음)
 
-방법 B — clasp
-```bash
-npm install -g @google/clasp
-clasp login
-cd apps-script
-cp .clasp.json.example .clasp.json   # scriptId 채우기 (Apps Script 프로젝트 설정에 있음)
-clasp push
-```
+1. 스프레드시트 → **확장 프로그램 → Apps Script**
+2. 왼쪽 **파일** 옆 `+` → **스크립트** 로 아래 7개 파일을 같은 이름으로 만들고, `apps-script/` 폴더의 같은 파일 내용을 통째로 붙여넣기
+   - `Bgg`, `Build`, `Dictionary`, `Menu`, `Sheets`, `Sync`, `Web` (처음 있던 `Code.gs` 는 지워도 됨)
+3. 프로젝트 설정(톱니바퀴) → **"편집기에서 'appsscript.json' 매니페스트 파일 표시"** 체크 → 편집기로 돌아가 `appsscript.json` 내용을 `apps-script/appsscript.json` 으로 바꾸기
+4. 저장 (Ctrl+S)
+
+코드를 고친 뒤에는 바뀐 파일만 같은 방법으로 다시 붙여넣고, 웹 앱은 **배포 관리 → 수정 → 새 버전** 으로 다시 배포.
 
 ### 3. 스크립트 속성 (비밀 값)
 
@@ -69,6 +65,9 @@ Apps Script → 프로젝트 설정 → **스크립트 속성**에 추가:
 ### 4. 처음 설정 실행
 
 스프레드시트 새로고침 → 메뉴 **Sulkus → 처음 설정** → 권한 허용.
+
+> 이 권한 창은 내 스크립트가 내 시트·외부 주소(BGG)에 접근해도 되는지 묻는 Google 기본 창이라 Google Cloud·결제와는 관계없음.
+> "Google에서 확인하지 않은 앱" 이 뜨면 **고급 → (프로젝트 이름)(으)로 이동(안전하지 않음) → 허용**. 내가 만든 스크립트라 괜찮음.
 게임·사전 시트, 숨은 시트, "시트를 고치면 반영" 트리거가 만들어짐.
 
 ### 5. 웹 앱 배포

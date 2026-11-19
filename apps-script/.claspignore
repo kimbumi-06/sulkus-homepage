@@ -1,4 +1,0 @@
-# clasp push 할 때 Apps Script에 올리지 않을 것 (테스트·도구는 로컬 전용)
-**/**
-!appsscript.json
-!*.gs
