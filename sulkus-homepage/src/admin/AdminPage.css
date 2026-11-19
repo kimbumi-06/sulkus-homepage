@@ -295,3 +295,129 @@
     max-height: 320px;
   }
 }
+
+/* ---------- 사전 탭 ---------- */
+.dict__bar {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.dict__types {
+  display: inline-flex;
+  gap: 4px;
+  padding: 3px;
+  border-radius: 999px;
+  background-color: rgba(255, 247, 225, 0.1);
+}
+.dict__types button {
+  height: 30px;
+  padding: 0 14px;
+  border: none;
+  border-radius: 999px;
+  background: transparent;
+  color: var(--color-primary);
+  font-size: 0.85rem;
+  cursor: pointer;
+}
+.dict__types button.active {
+  background-color: var(--color-primary);
+  color: var(--color-text);
+  font-weight: bold;
+}
+
+.dict__search {
+  width: 260px;
+}
+
+.dict__table {
+  width: 100%;
+  margin-top: 12px;
+  border-collapse: collapse;
+  font-size: 0.85rem;
+}
+.dict__table th {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255, 213, 79, 0.35);
+  color: var(--color-primary);
+  font-weight: normal;
+  text-align: left;
+}
+.dict__table td {
+  padding: 6px 8px;
+  border-bottom: 1px solid rgba(255, 213, 79, 0.12);
+  vertical-align: middle;
+}
+.dict__table td:nth-child(2) {
+  width: 22%;
+}
+.dict__table td:nth-child(3) {
+  width: 40%;
+}
+.dict__table .admin__input {
+  padding: 6px 10px;
+  border-radius: 10px;
+}
+
+.dict__en {
+  display: flex;
+  flex-direction: column;
+}
+.dict__en small {
+  font-size: 0.7rem;
+  opacity: 0.55;
+}
+
+.dict__badge {
+  display: inline-block;
+  padding: 2px 8px;
+  border-radius: 999px;
+  border: 1px solid rgba(255, 213, 79, 0.45);
+  font-size: 0.72rem;
+  white-space: nowrap;
+}
+.dict__badge--admin {
+  background-color: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-text);
+}
+.dict__badge--none {
+  opacity: 0.55;
+}
+
+.dict__actions {
+  white-space: nowrap;
+}
+.dict__actions .admin__btn {
+  width: 30px;
+  padding: 0;
+  justify-content: center;
+  margin-right: 4px;
+}
+.dict__state {
+  font-size: 0.75rem;
+  opacity: 0.8;
+}
+
+@media (max-width: 760px) {
+  .dict__table thead {
+    display: none;
+  }
+  .dict__table tr {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 6px;
+    padding: 10px 0;
+    border-bottom: 1px solid rgba(255, 213, 79, 0.2);
+  }
+  .dict__table td {
+    width: auto !important;
+    padding: 0;
+    border: none;
+  }
+  .dict__table td:nth-child(3) {
+    grid-column: 1 / -1;
+  }
+}

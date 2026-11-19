@@ -5,6 +5,7 @@ import { isFirebaseConfigured } from './firebase';
 import { useAdminAuth } from './useAdminAuth';
 import { usePublishedData } from './usePublishedData';
 import GamesTab from './GamesTab';
+import DictionaryTab from './DictionaryTab';
 
 // 검색엔진에 노출되지 않도록 (robots.txt에 경로를 적으면 오히려 주소가 드러나서 meta로만 처리)
 function useNoIndex() {
@@ -24,6 +25,7 @@ function useNoIndex() {
 
 const TABS = [
   { id: 'games', label: '게임' },
+  { id: 'terms', label: '장르·메커니즘 사전' },
 ];
 
 function AdminContent() {
@@ -51,6 +53,7 @@ function AdminContent() {
       </nav>
 
       {tab === 'games' && <GamesTab games={data.games} />}
+      {tab === 'terms' && <DictionaryTab games={data.games} terms={data.terms} />}
     </>
   );
 }
