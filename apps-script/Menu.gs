@@ -63,6 +63,7 @@ function menuStatus() {
 
 /** 처음 한 번: 시트 만들기 + 서식 + 자동 반영 트리거 */
 function setup() {
+  PropertiesService.getScriptProperties().setProperty('SHEET_ID', ss_().getId());
   const games = ensureSheet_(SHEET.games, GAME_HEADERS, false);
   const terms = ensureSheet_(SHEET.terms, TERM_HEADERS, false);
   ensureSheet_(SHEET.bgg, ['BGG ID', '데이터(JSON)'], true);

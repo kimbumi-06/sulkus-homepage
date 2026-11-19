@@ -31,8 +31,13 @@ const TERM_TYPE_BY_LABEL = { 메커니즘: 'mechanics', 장르: 'categories' };
 
 const CELL_CHUNK = 45000; // 셀 하나 최대 5만 자
 
+// 메뉴에서 실행할 땐 열린 시트, 웹 앱·시간 트리거에서는 setup 때 저장한 ID로 연다
 function ss_() {
-  return SpreadsheetApp.getActiveSpreadsheet();
+  const active = SpreadsheetApp.getActiveSpreadsheet();
+  if (active) return active;
+  const id = PropertiesService.getScriptProperties().getProperty('SHEET_ID');
+  if (!id) throw new Error('먼저 스프레드시트에서 Sulkus > 처음 설정 을 실행하세요.');
+  return SpreadsheetApp.openById(id);
 }
 
 function sheet_(name) {
