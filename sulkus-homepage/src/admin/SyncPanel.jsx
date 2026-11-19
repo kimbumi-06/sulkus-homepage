@@ -68,6 +68,8 @@ function SyncPanel({ token, onError, onChanged }) {
         setMessage(`게임 ${res.count}개를 사이트에 반영했어요.`);
         onChanged?.();
       }
+      // 게임이 적으면 첫 요청 안에 동기화가 끝남
+      if (action === 'sync' && res.job?.state === 'done') onChanged?.();
     } catch (e) {
       setMessage(e.message);
       onError(e);
